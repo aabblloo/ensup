@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Supprimer le document
+{% endblock %}
+
+{% block titre %}
+	Supprimer le document
+{% endblock %}
+
+{% block body %}
+	<h4 class="text-danger">Voulez-vous supprimer le document suivant ?</h4>
+
+	{{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+	{{ form_errors(form) }}
+
+	<div class="row">
+		<div class="col-md-4">
+			<table class="table table-sm table-borderless table-hover">
+				<tr>
+					<th style="width:40%">Titre</th>
+					<td>{{ autreDocument.titre }}</td>
+				</tr>
+				<tr>
+					<th>Date</th>
+					<td>
+						{{ autreDocument.date|dateFr }}
+					</td>
+				</tr>
+				<tr>
+					<th>Lien</th>
+					<td>
+						<a href="{{ asset('documents/'~autreDocument.lien) }}" target="_blank">
+							Voir le fichier
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="pt-5">
+						<button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+							<i class="fa fa-sm fa-trash-alt"></i>
+							Supprimer
+						</button>
+						<a href="{{ path('autre_doc_index') }}" class="btn btn-sm btn-success">
+							<i class="fa fa-sm fa-arrow-left"></i>
+							Annuler
+						</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+$("#autre").addClass("active");
+$("#autre_doc_index").addClass("active");
+
+$("#delete_btn").click(function () {
+if (confirm("Voulez-vous supprimer ce document ?")) {
+$("#delete_form").submit();
+}
+});
+});
+	</script>
+{% endblock %}

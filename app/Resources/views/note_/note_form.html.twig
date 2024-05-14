@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width: 40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.anScolaire) }}
+                {{ form_row(form.evaluation) }}
+                {{ form_row(form.classe) }}
+                {{ form_row(form.matiere) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        <a href="{{ path('note_index') }}"
+                           class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#classe_index").attr("class");
+            $("#classe_index").attr("class", attr + " active");
+
+            $(".chosen-select").chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: "Option non trouvée !",
+                    //width: "100%",
+                }
+            );
+
+        });
+    </script>
+{% endblock %}

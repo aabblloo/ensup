@@ -1,0 +1,51 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h5>Liste des étudiants</h5>
+
+    <h6>
+        Filière :
+        <span class="value">{{ filiere.code }}</span>
+    </h6>
+
+    <h6>
+        Année scolaire :
+        <span class="value">{{ anScolaire.nom }}</span>
+    </h6>
+
+    <h6>
+        Nombre :
+        <span class="value">{{ etudiants | length }}</span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+            <th style="width: 30%">Prénom</th>
+            <th style="width: 30%">Nom</th>
+            <th style="width: 15%">Matricule</th>
+            <th style="width: 15%">Contact</th>
+        </thead>
+
+        <tbody class="value">
+
+            {% for etd in etudiants %}
+                <tr>
+                    <td>{{ etd.prenom }}</td>
+                    <td>{{ etd.nom }}</td>
+                    <td>{{ etd.matricule }}</td>
+                    <td>{{ etd.telephone }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Pas de résultat</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

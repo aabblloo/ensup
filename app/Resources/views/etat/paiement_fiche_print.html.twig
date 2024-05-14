@@ -1,0 +1,82 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+	{{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p class="small">
+        BPE : 4895-torokorobougou Bamako République du Mali<br>
+        NIF : 085104084Y<br>
+        Tél. : 79 17 83 78 / 66 74 28 80<br>
+    </p>
+
+	<h5>REÇU DE PAIEMENT N° {{ paiement.id|zeroFill }}</h5>
+
+	<h6>
+		de :
+		<span class="value font-weight-bold">{{ paiement.etudiant.prenomNom }}</span>
+		<br>
+		Matricule :
+		<span class="value font-weight-bold">{{ paiement.etudiant.matricule }}</span>
+	</h6>
+	<div class="row">
+		<div class="col-6">
+			<table class="table table-borderless table-sm" style="margin-top: 20px; margin-left: -5px;">
+
+				<tbody class="value">
+
+					{#<tr>#}
+					{#	<th>Réf.</th>#}
+					{#	<td>{{ paiement.ref }}</td>#}
+					{#</tr>#}
+					<tr>
+						<th>Date</th>
+						<td>{{ paiement.date|dateFr }}</td>
+					</tr>
+					<tr>
+						<th>Montant</th>
+						<td>
+                            {{ paiement.montant|formatFr }}
+							F CFA
+                        </td>                        
+					</tr>
+                    <tr>
+						<th>Montant en lettre</th>
+						<td>
+                            <span id="nbre-lettre"></span>
+                        </td>                        
+					</tr>
+                    
+					{#<tr>#}
+					{#	<th>Mode d’opération</th>#}
+					{#	<td>{{ paiement.modeOperation }} #}{# paiement.banque.nom #}{#</td>#}
+					{#</tr>#}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+	<p class="mb-5">
+		Le Comptable
+	</p>
+
+	<p class="mt-5">
+		<small>
+			Imprimer le
+			{{ ''|date('d-m-Y à H:i') }}
+		</small>
+	</p>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ absolute_url(asset('js/nombre_en_lettre.js')) }}"></script>
+
+	<script>
+		$(function () {
+            $('#nbre-lettre').html(NumberToLetter({{ paiement.montant }}) + ' F CFA');
+        })
+	</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="row justify-content-center">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <table class="table table-borderless table-condensed col-md-6">
+            <tr style="vertical-align: middle">
+                <td>
+                    {{ form_widget(form.anScolaire) }}
+                    {{ form_errors(form.anScolaire) }}
+                </td>
+                {#<td>
+                    {{ form_widget(form.specialite) }}
+                    {{ form_errors(form.specialite) }}
+                </td>#}
+                <td>
+                    {{ form_widget(form.classe) }}
+                    {{ form_errors(form.classe) }}
+                </td>
+                {#<td>
+                    {{ form_widget(form.lettre) }}
+                    {{ form_errors(form.lettre) }}
+                </td>#}
+                <td>
+                    <button class="btn btn-sm btn-primary">Rechercher</button>
+                </td>
+            </tr>
+        </table>
+        {{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    <table id="table-sort" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Date naiss.</th>
+            <th>Lieu naiss.</th>
+            <th>Téléphone</th>
+            <th>Matricule</th>
+            <th>Photo</th>
+        </tr>
+        </thead>
+
+        <tbody class="value">
+
+        {% for etd in etudiants %}
+            <tr>
+                <td>
+                    <a href="{{ path('etudiant_show', {'id': etd.id}) }}">
+                        {{ etd.nom }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('etudiant_show', {'id': etd.id}) }}">
+                        {{ etd.prenom }}
+                    </a>
+                </td>
+                <td>{{ etd.dateNaiss|dateFr }}</td>
+                <td>{{ etd.lieuNaiss }}</td>
+                <td>{{ etd.telephone }}</td>
+                <td>{{ etd.matricule }}</td>
+                <td style="width: 50px;">
+                    <a href="{{ path('etudiant_show', {'id': etd.id}) }}">
+                        <img class="img-thumbnail"
+                             src="{{ asset('images/etudiants/'~etd.photoDefault) }}"
+                             alt="Photo">
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_scolaire").addClass("active");
+            $("#etudiant_index").addClass("active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                //width: "100%",
+            });
+        });
+    </script>
+{% endblock %}

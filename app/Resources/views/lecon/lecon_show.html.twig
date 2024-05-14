@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Leçon show
+{% endblock %}
+
+{% block titre %}
+<span class="text-center" style="display: block;">
+	Cours de :
+	<span class="text-success">{{ lecon.classeMatiere.matiere.code }}</span><br>
+	Leçon :
+	<span class="text-success">{{ lecon.titre }}</span>
+    </span>
+{% endblock %}
+
+{% block body %}
+
+	<div class="row justify-content-center">
+		<div class="col-5">
+			<video width="100%" height="auto" controls>
+				<source src="{{ asset('cours/'~lecon.video) }}" type="video/mp4">
+				Your browser does not support the video tag.
+			</video>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+$("#admin").addClass("active");
+$("#classe_index").addClass("active");
+});
+	</script>
+{% endblock %}

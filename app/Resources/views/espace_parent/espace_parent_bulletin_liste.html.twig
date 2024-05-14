@@ -1,0 +1,41 @@
+{% extends 'espace_parent/base_espace_parent.html.twig' %}
+{% block title %}Bulletins Index{% endblock %}
+{% block titre %}Liste des Bulletins{% endblock %}
+
+{% block body %}
+    <h5>Etudiant : <span class="text-monospace">{{ etudiant.prenomNom }}</span></h5>
+
+    <table class="table table-striped table-hover" style="margin-top: 20px">
+
+        <thead class="bg-info_ text-white_">
+            <tr>
+                <th>Année</th>
+                <th>Classe</th>
+                <th>Période</th>
+            </tr>
+        </thead>
+
+        <tbody class="text-monospace">
+            {% for b in bulletins %}
+                <tr>
+                    <td>{{ b.annee }}</td>
+                    <td>{{ b.classe }}</td>
+                    <td>
+                        {% set link = {'eid':etudiant.id, 'aid':b.aid, 'cid':b.cid, 'pid':b.pid} %}
+                        <a href="{{ path('espace_parent_bulletin_print', link) }}" target="_blank">
+                            {{ b.periode }}
+                        </a>                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#espace_parent_index").addClass("active");
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base_print2.html.twig" %}
+{% block title %}Rélévés de notes{% endblock %}
+
+{% block body %}
+    <h3 class="text-center">Rélévés de notes par niveau d'étude</h3>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            {% for ue in ues %}
+                <th>{{ ue.nom }}</th>
+            {% endfor %}
+            <th>Moyenne</th>
+        </tr>
+
+        {% for releve in releves %}
+            <tr>
+                <td>{{ releve.nom }}</td>
+                <td>{{ releve.prenom }}</td>
+                {% set total = 0 %}
+                {% set nbre = 0 %}
+                {% for moyenne in releve.moyennes %}
+                    <td>
+                        {% if moyenne %}
+                            {% set total = total + moyenne %}
+                            {% set nbre = nbre + 1 %}
+                            {{ moyenne|number_format(2,',', ' ') }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    {% if nbre > 0 %}
+                        {{ (total / nbre)|number_format(2,',', ' ') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    {% for releve in releves %}
+
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    <span>
+        <a href="{{ path('departement_show', {'id': classe.cycle.specialite.section.departement.id}) }}" class="text-success">
+        {{ classe.cycle.specialite.section.departement.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    <span>
+        <a href="{{ path('specialite_show', {'id': classe.cycle.specialite.id}) }}" class="text-primary">
+        {{ classe.cycle.specialite.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    <span>
+        <a href="{{ path('specialite_show', {'id': classe.cycle.specialite.id, 'cycle_id': classe.cycle.id}) }}"
+           class="text-info">
+        {{ classe.cycle.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    {{ titre }}
+{% endblock %}
+
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width: 20%"></td>
+                    <td></td>
+                </tr>
+                {# {{ form_row(form.code) }} #}
+                {{ form_row(form.nom) }}
+                {# {{ form_row(form.cycle) }} #}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save btn-sm"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set lien = path('specialite_show', {'id': classe.cycle.specialite.id, 'cycle_id':classe.cycle.id }) %}
+                        {% if classe.id %}
+                            {% set lien = path('classe_show', {'id': classe.id }) %}
+                        {% endif %}
+                        <a href="{{ lien }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#classe_index").attr("class");
+            $("#classe_index").attr("class", attr + " active");
+
+            $(".chosen-select").chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: "Option non trouvée !",
+                    //width: "100%",
+                }
+            );
+
+        });
+    </script>
+{% endblock %}

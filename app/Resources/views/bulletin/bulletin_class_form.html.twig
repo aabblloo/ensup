@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Rélévés de notes{% endblock %}
+
+{% block titre %}Rélévés de notes par niveau d'étude{% endblock %}
+
+{% block body %}
+    <h3 class="text-center">Rélévés de notes par niveau d'étude</h3>
+
+    <div class="row justify-content-center">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <table class="table table-borderless table-condensed col-md-6">
+            <tr valign="middle">
+                <td>
+                    {{ form_widget(form.anScolaire) }}
+                    {{ form_errors(form.anScolaire) }}
+                </td>
+                <td>
+                    {{ form_widget(form.classe) }}
+                    {{ form_errors(form.classe) }}
+                </td>
+                <td>
+                    {{ form_widget(form.semestre) }}
+                    {{ form_errors(form.semestre) }}
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-primary">Rechercher</button>
+                </td>
+            </tr>
+        </table>
+
+        {{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_scolaire").addClass("active");
+            $("#bulletin_classe_form").addClass("active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                //width: "100%",
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_">
+        <a class="mr-2" href="{{ path('etudiant_edit', {'id': etudiant.id}) }}">
+            <i class="fa  fa-edit"></i>
+            Modifier
+        </a>
+
+        <a class="text-danger mr-2" href="{{ path('etudiant_delete', {'id': etudiant.id}) }}">
+            <i class="fa fa-trash-alt"></i>
+            Supprimer
+        </a>
+
+        <a class="mr-2" href="{{ path('etudiant_classe_new', {'id': etudiant.id}) }}">
+            <i class="fa fa-chalkboard-teacher"></i>
+            Inscriptions
+        </a>
+
+        <a class="mr-2" href="{{ path('etd_paie_index', {'id': etudiant.id}) }}">
+            <i class="fas fa-money-bill-alt"></i>
+            Paiements
+        </a>
+
+        <a class="mr-2" href="{{ path('dossier_new',{'id': etudiant.id, 'type': 'e'}) }}">
+            <i class="fa fa-folder-open"></i>
+            Saisie des dossiers
+        </a>
+
+        <a class="mr-2" href="{{ path('suivi_new', {'id': etudiant.id}) }}">
+            <i class="fa fa-comment-alt"></i>
+            Suivi
+        </a>
+
+        <a class="mr-2" href="{{ path('carte_etudiant_index', {'id': etudiant.id}) }}" target="_blank">
+            <i class="fa fa-camera" aria-hidden="true"></i>
+            Carte Etudiant
+        </a>
+
+        <a class="mr-2" href="{{ path('recap_show', {'id': etudiant.id} )}}" target="_blank">
+            <i class="fa  fa-list" aria-hidden="true"></i>
+            Recap curcus
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            <table class="table table-borderless table-hover mt-3">
+                <tbody>
+                <tr>
+                    <th style="width: 40%">Matricule</th>
+                    <td class="value">{{ etudiant.matricule }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td class="value">{{ etudiant.prenom }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td class="value">{{ etudiant.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Sexe</th>
+                    <td class="value">{{ etudiant.sexe }}</td>
+                </tr>
+                <tr>
+                    <th>Date naiss.</th>
+                    <td class="value">{{ etudiant.dateNaiss | dateFr }}</td>
+                </tr>
+                <tr>
+                    <th>Lieu naiss.</th>
+                    <td class="value">{{ etudiant.lieuNaiss }}</td>
+                </tr>
+                <tr>
+                    <th>Quartier</th>
+                    <td class="value">{{ etudiant.quartier }}</td>
+                </tr>
+                <tr>
+                    <th>Téléphone</th>
+                    <td class="value">{{ etudiant.telephone }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td class="value">{{ etudiant.email }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-4">
+            <table class="table table-borderless table-hover mt-3">
+                <tbody>
+                <tr>
+                    <th style="width: 40%">Année DEF</th>
+                    <td class="value">{{ etudiant.anneeDef }}</td>
+                </tr>
+                <tr>
+                    <th>Année BAC</th>
+                    <td class="value">{{ etudiant.anneeBac }}</td>
+                </tr>
+                <tr>
+                    <th>Niveau d'étude</th>
+                    <td class="value">{{ etudiant.lastClasse }}</td>
+                </tr>
+                <tr>
+                    <th>Etat</th>
+                    <td class="value">{{ etudiant.etat }}</td>
+                </tr>
+                <tr>
+                    <th>Mot de passe</th>
+                    <td class="value">{{ etudiant.passwordText }}</td>
+                </tr>
+                <tr>
+                    <th>Accès au cours</th>
+                    <td class="value">
+                        {{ etudiant.isAccesCours ? 'Oui':'Non' }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-3">
+            <div style="height: 400px; overflow: hidden;">
+                <img class="card-img-top img-thumbnail" src="{{ asset('images/etudiants/'~etudiant.photoDefault) }}"
+                     alt="{{ etudiant.prenomNom }}">
+            </div>
+            <div
+                    class="text-center">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal">
+                    Changer la photo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered_ table-striped table-hover mb-4">
+                <thead>
+                <tr>
+                    <th>Année</th>
+                    <th>Spécialité</th>
+                    <th>Niveau d'étude</th>
+                    <th class="text-right">Montant</th>
+                    <th class="text-right">Payé</th>
+                    <th class="text-right">Reste</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="value">
+                {% for ec in paiements %}
+                    <tr>
+                        <td>{{ ec.anScolaire.nom }}</td>
+                        <td>{{ ec.classe.cycle.specialite.nom }}</td>
+                        <td>{{ ec.classe.nom }}</td>
+                        <td class="text-right" style="word-wrap: normal;">
+                            {{ ec.montant | formatFr }}
+                        </td>
+                        <td class="text-right" style="word-wrap: normal;">
+                            {{ ec.montantPaye | formatFr }}
+                        </td>
+                        <td class="text-right" style="word-wrap: normal;">
+                            {{ (ec.montant - ec.montantPaye) | formatFr }}
+                        </td>
+                        <td class="text-right">
+                            <a href="{{ path('bulletin_show', {'id': ec.id}) }}" target="_blank">
+                                Rélévés de notes
+                            </a>
+                        </td>
+                        <td class="text-right">
+                            <a href="{{ path('certificat_show', {'id': ec.id}) }}" target="_blank">
+                                Certificat de fréquentation
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4">
+            <table class="table table-bordered_ table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>Dossiers</th>
+                </tr>
+                </thead>
+                <tbody class="value">
+                {% for doss in dossiers %}
+                    <tr>
+                        <td>
+                            <a href="{{ asset('documents/'~doss.lien) }}" title="Afficher" target="_blank">
+                                {{ doss.nom }}
+                            </a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nouvelle Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fa fa-save"></i>
+                        Enregistrer
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#gestion_scolaire").attr("class");
+            $("#gestion_scolaire").attr("class", attr + " active");
+            attr = $("#etudiant_index").attr("class");
+            $("#etudiant_index").attr("class", attr + " active");
+        });
+    </script>
+{% endblock %}

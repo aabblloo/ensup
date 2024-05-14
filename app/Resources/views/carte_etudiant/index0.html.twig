@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{{ app_name }}
+		- Carte Etudiant
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<style>
+		body {
+			font-size: 7pt;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0;
+			padding: 1mm;
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 10pt;
+		}
+
+		h2 {
+			font-size: 9pt;
+		}
+
+		h3 {
+			font-size: 8pt;
+		}
+
+		hr {
+			padding: 0;
+			margin: 0 auto;
+			border-bottom: 2px solid black;
+			width: 7cm;
+		}
+
+		.carte {
+			width: 8.56cm;
+			height: 5.39cm;
+			padding: 2mm;
+			margin: auto;
+			border: 1px solid silver;
+			background-image: url("{{ absolute_url(asset('images/logo_ensup_300x211.jpg')) }}");
+			background-size: 1.4cm;
+			background-repeat: no-repeat;
+		}
+
+		.title {
+			text-align: center;
+		}
+
+		.photo {
+			width: 2cm;
+			margin-bottom: 1mm;
+		}
+
+		.logo {
+			float: left;
+			width: 2cm;
+		}
+
+		.valeur {
+			font-weight: bold;
+		}
+
+		.clear {
+			clear: both;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="carte">
+		{# <img class="logo" src="{{ absolute_url(asset('images/logo_ensup_300x211.jpg')) }}"> #}
+		<h1 class="">CARTE D'ETUDIANT</h1>
+		<h2 class="text-center">ECOLE NORMALE SUPÉRIEURE</h2>
+		<hr>
+		<h3 style="text-transform: uppercase;">
+			{{ etudiant_classe.classe.cycle.nom }}
+			{{ etudiant_classe.classe.cycle.specialite.nom }}
+		</h3>
+
+		<div>
+			<div style="float: left; width: 6cm;">
+
+				<table>
+					<tr>
+						<td style="width: 1.5cm;">No Etudiant</td>
+						<td class="valeur">{{ etudiant_classe.etudiant.matricule }}</td>
+					</tr>
+
+					<tr>
+						<td>Nom</td>
+						<td class="valeur">{{ etudiant_classe.etudiant.nom }}</td>
+					</tr>
+
+					<tr>
+						<td>Prénom</td>
+						<td class="valeur">{{ etudiant_classe.etudiant.prenom }}</td>
+					</tr>
+
+					<tr>
+						<td>Né(e) le</td>
+						<td class="valeur">
+							{{ etudiant_classe.etudiant.dateNaiss|dateFr }}
+							à
+							{{ etudiant_classe.etudiant.lieuNaiss }}
+						</td>
+					</tr>
+
+					<tr>
+						<td>Téléphone</td>
+						<td class="valeur">{{ etudiant_classe.etudiant.telephone }}</td>
+					</tr>
+
+					<tr>
+						<td>Nationalité</td>
+						<td class="valeur"></td>
+					</tr>
+
+					<tr>
+						<td>Email</td>
+						<td class="valeur">{{ etudiant_classe.etudiant.email }}</td>
+					</tr>
+				</table>
+
+				<div style="text-align: center;">
+					<div style="text-transform: uppercase;">
+						Secrétaire Général
+					</div>
+
+					<div style="text-transform: uppercase; margin-top: 6mm;">
+						{{ signataire.valeur }}
+					</div>
+
+				</div>
+			</div>
+
+			<div style="float: right; width: 2cm;">
+				<img class="photo"
+					src="{{ absolute_url(asset('images/etudiants/'~etudiant_classe.etudiant.photoDefault)) }}"
+					class="img-thumbnail">
+				<div style="text-align: center;">
+					{{ etudiant_classe.anScolaire.nom }}
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+
+</html>
+</body>
+
+</html>

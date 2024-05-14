@@ -1,0 +1,67 @@
+{% extends 'espace_parent/base_espace_parent.html.twig' %}
+
+{% block title %}Parent Etudiant liste{% endblock %}
+{% block titre %}Mes Etudiants parrainés{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Matricule</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="value">
+            {% for etd in etudiants %}
+                <tr>
+                    <td>{{ etd.prenom }}</td>
+                    <td>{{ etd.nom }}</td>
+                    <td>{{ etd.matricule }}</td>
+                    <td>
+                        <a href="{{ path('espace_parent_suivi', {'id':etd.id}) }}" target="_blank">
+                            <i class="fas fa-list"></i>
+                            Suivi des activités
+                        </a> |
+                        <a href="{{ path('espace_parent_paiement', {'id':etd.id}) }}" target="_blank">
+                            <i class="fas fa-credit-card"></i>
+                            Situation des paiements
+                        </a> |
+                        <a href="{{ path('espace_parent_bulletin_liste', {'id':etd.id}) }}" 
+                           target="_blank">
+                            <i class="fas fa-calculator"></i>
+                            Bulletins
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#espace_parent_index").addClass("active");
+
+            $(".chosen-select").chosen(
+                    {
+                        allow_single_deselect: true,
+                        no_results_text: "Option non trouvée !",
+                        //width: "100%",
+                    }
+            );
+
+        });
+    </script>
+{% endblock %}

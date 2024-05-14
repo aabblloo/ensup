@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste UEs{% endblock %}
+
+{% block titre %}Liste UEs{% endblock %}
+
+{% block body %}
+
+    <p>
+        <a class="btn btn-link" href="{{ path('listeUe_new') }}">
+            <i class="fa fa-calculator"></i>
+            Enregistrer une UE
+        </a>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Sigle</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for listeUe in listeUes %}
+            <tr>
+                <td>{{ listeUe.nom }}</td>
+                <td>{{ listeUe.sigle }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('listeUe_edit', { 'id': listeUe.id }) }}" class="btn btn-link py-0"
+                       title="Editer">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{{ path('listeUe_delete', { 'id': listeUe.id }) }}"
+                       class="btn btn-link py-0 text-danger"
+                       title="Supprimer">
+                        <i class="fa fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#liste_ue_index").addClass("active");
+        });
+    </script>
+{% endblock %}

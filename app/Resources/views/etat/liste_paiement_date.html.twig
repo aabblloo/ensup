@@ -1,0 +1,50 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h5>{{ titre }}</h5>
+
+    <h6>
+        du : <span class="value font-weight-bold">{{ debut|dateFr }}</span>
+        au : <span class="value font-weight-bold">{{ fin|dateFr }}</span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <th style="width: 15%">Date</th>
+        <th style="width: 30%">Etudiant(e)</th>
+        <th>Niveau d'étude</th>
+        <th style="width: 20%">Montant</th>
+        </thead>
+
+        <tfoot>
+        <tr>
+            <th>Total</th>
+            <th></th>
+            <th></th>
+            <th class="value text-right" style="padding-right: 20px">{{ total|formatFr }}</th>
+        </tr>
+        </tfoot>
+
+        <tbody class="value">
+
+        {% for paie in paiments %}
+            <tr>
+                <td>{{ paie.date|dateFr }}</td>
+                <td>{{ paie.etudiant.prenomNom }}</td>
+                <td>{{ paie.etudiantClasse.classe.nom }}</td>
+                <td class="text-right" style="padding-right: 20px">{{ paie.montant|formatFr }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

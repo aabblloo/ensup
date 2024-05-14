@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ titre }}
+{% endblock %}
+
+{% block titre %}
+{{ titre }}
+{% endblock %}
+
+{% block body %}
+<div class="breadcrumb_ mb-3">
+    <a class="btn btn-link" href="{{ path('cycle_new', {'id': cycle.id}) }}">
+        <i class="fa fa-recycle fa-sm_"></i>
+        Ajouter un cycle
+    </a>
+</div>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th class="text-center">Ordre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="value">
+        {% for cycle in cycles %}
+        <tr>
+            <td>{{ cycle.code }}</td>
+            <td>{{ cycle.nom }}</td>
+            <td class="text-center">{{ cycle.ordre }}</td>
+
+            <td class="text-right">
+                <a href="{{ path('cycle_edit', {'id': cycle.id}) }}" class="btn btn-lin py-0" title="Modifier">
+                    <i class="fa fa-edit fa-sm_"></i>
+                </a>
+                <a href="{{ path('cycle_delete', {'id': cycle.id}) }}" class="btn btn-lin py-0" title="Supprimer">
+                    <i class="fa fa-trash text-danger fa-sm_"></i>
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <caption>Pas d'enregistrement</caption>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function () {
+        var attr = $("#admin").attr("class");
+        $("#admin").attr("class", attr + " active");
+        attr = $("#cycle_index").attr("class");
+        $("#cycle_index").attr("class", attr + " active");
+    });
+</script>
+{% endblock %}

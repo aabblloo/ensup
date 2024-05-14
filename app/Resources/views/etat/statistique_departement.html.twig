@@ -1,0 +1,63 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-center mt-3">Statitistiques</h4>
+    <h5 class="text-center mb-3">{{ anScolaire.nom }}</h5>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Département</th>
+            <th>Section</th>
+            <th>Spécialité</th>
+            <th>Cyle</th>
+            <th>Nombre</th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for d in departements %}
+            <tr class="text-white bg-secondary">
+                <td>{{ d.nom|upper }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ d.nombre(anScolaire) }}</td>
+            </tr>
+            {% for sec in d.sections %}
+                <tr class="text-primary">
+                    <td></td>
+                    <td>{{ sec.nom|upper }}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ sec.nombre(anScolaire) }}</td>
+                </tr>
+                {% for sp in sec.specialites %}
+                    <tr class="text-secondary">
+                        <td></td>
+                        <td></td>
+                        <td>{{ sp.nom|upper }}</td>
+                        <td></td>
+                        <td>{{ sp.nombre(anScolaire) }}</td>
+                    </tr>
+                    {% for cy in sp.cycles %}
+                        <tr class="text-info">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ cy.nom|upper }}</td>
+                            <td>{{ cy.nombre(anScolaire) }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

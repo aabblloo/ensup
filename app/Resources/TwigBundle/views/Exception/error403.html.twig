@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ status_code }} {{ status_text }}{% endblock %}
+
+{% block titre %}<h3>Vous n'avez pas le droit d'accéder à cette page</h3>{% endblock %}
+
+{% block body %}
+    <h4>{{ exception.message }}</h4>
+    <h4>Le serveur a retourné l'erreur suivante : "{{ status_code }} - {{ status_text }}".</h4>
+
+    {# example security usage, see below #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {# ... #}
+    {% endif %}   
+
+    <p>
+        Pour accéder à la page démandée vous devez avoir les droits nécessaires.
+        <a href="#" onClick="history.back()">Cliquez ici pour retourner à la page précédente</a>.
+    </p>
+{% endblock %}

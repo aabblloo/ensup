@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des semestres
+{% endblock %}
+
+{% block titre %}
+    <span>
+        <a href="{{ path('departement_show', {'id': cycle.specialite.departement.id}) }}" class="text-success">
+        {{ cycle.specialite.departement.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    <span>
+        <a href="{{ path('specialite_show', {'id': cycle.specialite.id}) }}" class="text-info">
+        {{ cycle.specialite.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    Liste des semestres
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_ mb-3">
+        <a class="btn btn-link" href="{{ path('semestre_new') }}">
+            <i class="fa fa-calendar-alt fa-sm_"></i>
+            Ajouter un semestre
+        </a>
+    </div>
+
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th class="text-center">Ordre</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for semestre in semestres %}
+            <tr>
+                <td>{{ semestre.code }}</td>
+                <td>{{ semestre.nom }}</td>
+                <td class="text-center">{{ semestre.ordre }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('semestre_edit', {'id': semestre.id}) }}" class="btn btn-link py-0"
+                       title="Modifier">
+                        <i class="fa fa-edit fa-sm_"></i>
+                    </a>
+                    <a href="{{ path('semestre_delete', {'id': semestre.id}) }}" class="btn btn-link py-0"
+                       title="Supprimer">
+                        <i class="fa fa-trash text-danger fa-sm_"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <caption>Pas d'enregistrement</caption>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#semestre_index").addClass("active");
+        });
+    </script>
+{% endblock %}

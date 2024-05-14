@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    New Paiement
+{% endblock %}
+
+{% block titre %}
+    Nouveau Paiement de {{ etudiant.prenomNomMle }} - {{ etudiant.lastClasse }}
+{% endblock %}
+
+{% block body %}
+{{ include('etudiant_paiement/etd_paie_form.html.twig') }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.js') }}"></script>
+
+    <script>
+        $(function () {
+            $('#gestion_scolaire').addClass('active');
+            $('#etudiant_index').addClass('active');
+
+            $('.chosen-select').chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                width: "100%"
+            });
+        });
+    </script>
+{% endblock %}

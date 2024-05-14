@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }} {{ classeMatiere.classe.code }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width:40%"></td>
+                    <td></td>
+                </tr>
+
+                {{ form_row(form.matiere) }}
+                {{ form_row(form.coeff) }}
+                {# {{ form_row(form.file) }} #}
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set url = path('classe_index') %}
+                        {% if edit is defined %}
+                            {% set url = path('classe_matiere_new', {'id': classeMatiere.classe.id}) %}
+                        {% endif %}
+
+                        <a href="{{ url }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {{ form_end(form) }}
+        </div>
+
+        {% if matieres is defined %}
+            <div class="col-8">
+                <table class="table table-bordered table-striped table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Coéfficient</th>
+                            <th>Document</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="value">                    
+                        {% for cm in matieres %}
+                            <tr>
+                                <td>{{ cm.matiere.code }}</td>
+                                <td>{{ cm.coeff }}</td>
+                                <td>
+                                    <a href="{{ asset('cours/'~cm.document) }}" target="_blank">
+                                        {{ cm.document }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('classe_matiere_edit', {'id': cm.id}) }}"
+                                       title="Modifier">
+                                        <i class="fa fa-sm fa-edit"></i>
+                                    </a>
+
+                                    <a href="{{ path('classe_matiere_delete', {'id': cm.id}) }}"
+                                       title="Supprimer">
+                                        <i class="fa fa-sm fa-trash-alt text-danger"></i>
+                                    </a>
+
+                                    <a href="{{ path('lecon_new', {'id': cm.id}) }}">
+                                        Afficher les léçons
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#classe_index").attr("class");
+            $("#classe_index").attr("class", attr + " active");
+
+            $(".chosen-select").chosen(
+                    {
+                        allow_single_deselect: true,
+                        no_results_text: "Option non trouvée !",
+                        //width: "100%",
+                    }
+            );
+
+        });
+    </script>
+{% endblock %}

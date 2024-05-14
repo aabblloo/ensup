@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des Bulletins{% endblock %}
+
+{% block titre %}Rélévés de notes{% endblock %}
+
+{% block body %}
+    <h3 class="text-center">Rélévés de notes</h3>
+    <h5 class="text-center">
+        Etudiant : <span class="value font-weight-bold">{{ etudiant.prenomNomMle }}</span>
+    </h5>
+
+    <div class="row justify-content-center text-center">
+        <div class="col-md-2">
+            {{ form_start(form) }}
+            {{ form_row(form.anScolaire) }}
+            <button class="btn btn-primary">Afficher</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <table class="table table-bordered_ table-striped table-sm_" style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <tr>
+            <th>Année</th>
+            <th>Niveau d'étude</th>
+            <th>Semestre</th>
+        </tr>
+        </thead>
+
+        <tbody class="value">
+        {% for b in bulletins %}
+            <tr>
+                <td>{{ b.annee }}</td>
+                <td>{{ b.classe }}</td>
+                <td>
+                    {% set link = {'eid':etudiant.id, 'aid':b.aid, 'cid':b.cid, 'sid':b.sid} %}
+                    <a href="{{ path('bulletin_show', link) }}" target="_blank">
+                        {{ b.semestre }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

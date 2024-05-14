@@ -1,0 +1,114 @@
+{% extends 'espace_etudiant/base_espace_etudiant.html.twig' %}
+
+{% block title %}Espace Etudiant{% endblock %}
+
+{% block titre %}Acceuil{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-6">
+            <h4 class="mb-3">Mes paiements</h4>
+
+            {% for ec in etdClasses %}
+                <p class="mt-3">
+                    <b>Année</b> :
+                    <span class="text-monospace mr-3">{{ ec.anScolaire.nom }}</span>
+                    <b>Classe</b> : <span class="text-monospace">{{ ec.classe.code }}</span>
+
+                    <a href="{{ path('espace_etudiant_paiement_print') }}" class="ml-5" target="_blank">
+                        <i class="fas fa-print"></i>
+                        Imprimer
+                    </a>
+                </p>
+                <table  class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>                
+                            <th style="text-align: right">Montant</th>
+                            <th>Mode</th>
+                            <th>Réf.</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-monospace">       
+                        {% for p in ec.paiements %}
+                            <tr>
+                                <td>{{ p.date|dateFr }}</td>                        
+                                <td align="right">{{ p.montant|formatFr }}</td>
+                                <td>
+                                    {{ p.banque ? p.banque.nom : 'Espèce' }}
+                                </td>
+                                <td>{{ p.ref }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+
+        <div class="col-6">
+            <h4 style="margin-bottom: 57px">Mes bulletins</h4>
+
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Année</th>
+                        <th>Classe</th>
+                        <th>Période</th>
+                    </tr>
+                </thead>                
+                <tbody class="text-monospace">
+                    {% for b in bulletins %}
+                        <tr>
+                            <td>{{ b.annee }}</td>
+                            <td>{{ b.classe }}</td>
+                            <td>
+                                {% set link = {'aid':b.aid, 'cid':b.cid, 'pid':b.pid} %}
+                                <a href="{{ path('espace_etudiant_bulletin_print', link) }}" 
+                                   target="_blank">
+                                    <i class="fas fa-print"></i>
+                                    {{ b.periode }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    {% if etudiant.isAccesCours %}
+        <div class="row mt-5">
+            <div class="col-6">
+                <h4>Mes cours</h4>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Coéff.</th>
+                            <th>Document</th>
+                        </tr>
+                    </thead>
+                    <tbody class="value">
+                        {% for c in cours %}
+                            <tr>
+                                <td>{{ c.matiere.code }}</td>
+                                <td>{{ c.coeff }}</td>
+                                <td>
+                                    <a href="{{ path('espace_etudiant_lecon', {'id':c.id}) }}" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Cliquez-ici
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Delete leçon
+{% endblock %}
+
+{% block titre %}
+	Suppression léçon
+{% endblock %}
+
+{% block body %}
+	{{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+	{{ form_errors(form) }}
+	<table class="table table-borderless">
+		<tbody>
+			<tr>
+				<th style="width:10%;">Titre</th>
+				<td>{{ lecon.titre }}</td>
+			</tr>
+			<tr>
+				<th>Début</th>
+				<td>{{ lecon.debut|dateFr }}</td>
+			</tr>
+			<tr>
+				<th>Fin</th>
+				<td>{{ lecon.fin|dateFr }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ lecon.description }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+						<i class="fa fa-sm fa-trash-alt"></i>
+						Supprimer
+					</button>
+					<a href="{{ path('lecon_new', {'id':classeMatiere.id}) }}" class="btn btn-sm btn-success">
+						<i class="fa fa-sm fa-arrow-left"></i>
+						Annuler
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+$("#admin").addClass("active");
+$("#classe_index").addClass("active");
+
+$("#delete_btn").click(function () {
+if (confirm("Voulez-vous supprimer cette leçon ?")) {
+$("#delete_form").submit();
+}
+});
+});
+	</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    Imprimer Fiche dévaluation
+{% endblock %}
+
+{% block titre %}
+    <span class="d-block text-center">Imprimer Fiche dévaluation</span>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row align-items-center justify-content-center"
+         style="margin-bottom: 20px">
+
+        <div class="col-10">
+            <table class="table">
+                <tr>
+                    <td style="width: 20%">
+                        {{ form_label(form.anScolaire) }}
+                    </td>
+                    <td>
+                        <div style="width: 20%">
+                            {{ form_widget(form.anScolaire) }}
+                            {{ form_errors(form.anScolaire) }}
+                        </div>
+                    </td>
+                </tr>
+                {{ form_row(form.ue) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-file-pdf"></i>
+                            Afficher
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_scolaire").addClass("active");
+            $("#gs_etat_index").addClass("active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                width: "100%"
+            });
+        });
+    </script>
+{% endblock %}

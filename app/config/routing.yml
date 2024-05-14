@@ -1,0 +1,15 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+    
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+  
+login_check_parent:
+    path: /espace/parent/login_check   
+    
+login_check_student:
+    path: /espace/etudiant/login_check       

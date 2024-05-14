@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {{ app_name }}
+            -
+            {% block title %}Etats !{% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ asset.bootstrapcss }}">
+        <link rel="stylesheet" href="{{ asset.style }}">
+        {% block stylesheets %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="container">
+            <table style="margin-bottom: 20px">
+                <tr style="vertical-align: top">
+                    <td style="width: 40%">
+                        <img class="img-fluid" src="{{ asset.logo }}" alt="Logo">
+                    </td>
+                <td></td>
+        </tr>
+    </table>
+
+    <div class="messages">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-{{ type }}" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message | raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {% block body %}{% endblock %}
+</div>
+
+<script src="{{ asset.jquery }}"></script>
+<script src="{{ asset.popper }}"></script>
+<script src="{{ asset.bootstrapjs }}"></script>
+{#
+    <script src="{{ asset('js/my_functions.js') }}"></script> #}
+{% block javascripts %}{% endblock %}
+</body>
+
+</html>

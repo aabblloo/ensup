@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'form_theme.html.twig' %}
+
+{% block title %}Modifier groupe{% endblock %}
+{% block titre %}
+    <h1>Modifier le groupe</h1>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                {{ form_row(form.name) }}
+                {{ form_row(form.role) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" type="submit">Enregistrer</button>
+                        <a href="{{ path('group_liste') }}" class="btn btn-sm btn-primary">Annuler</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#user_index").addClass("active");
+        });
+    </script>
+{% endblock %}

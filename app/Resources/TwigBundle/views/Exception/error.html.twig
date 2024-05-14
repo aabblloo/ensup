@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ status_code }} {{ status_text }}{% endblock %}
+
+{% block titre %}<h3>Oops! une erreur s'est produite</h3>{% endblock %}
+
+{% block body %}
+    <h4>{{ exception.message }}</h4>
+    <h4>Le serveur a retourné l'erreur suivante : "{{ status_code }} - {{ status_text }}".</h4>
+
+    {# example security usage, see below #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {# ... #}
+    {% endif %}   
+
+    <p>
+        Ce message est dû à une erreur interne du serveur.<br>
+        <a href="#" onClick="history.back()">Cliquez ici pour retourner à la page précédente</a>
+        ou contactez l'Administrateur si le problème persiste.
+    </p>
+{% endblock %}

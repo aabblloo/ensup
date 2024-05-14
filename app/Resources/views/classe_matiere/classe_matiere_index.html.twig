@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Classematieres list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Coeff</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for classeMatiere in classeMatieres %}
+                <tr>
+                    <td>
+                        <a href="{{ path('classematiere_show', { 'id': classeMatiere.id }) }}">
+                            {{ classeMatiere.id }}
+                        </a>
+                    </td>
+                    <td>{{ classeMatiere.coeff }}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('classematiere_show', { 'id': classeMatiere.id }) }}">show</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('classematiere_edit', { 'id': classeMatiere.id }) }}">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('classematiere_new') }}">Create a new classeMatiere</a>
+        </li>
+    </ul>
+{% endblock %}

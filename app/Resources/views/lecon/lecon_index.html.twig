@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Leçon index
+{% endblock %}
+
+{% block titre %}
+    Léçons de 
+    <span class="text-success">{{ classeMatiere.matiere.code }}</span> 
+    de <span class="text-success">{{ classeMatiere.classe.code }}</span> 
+{% endblock %}
+
+{% block body %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Debut</th>
+                <th>Fin</th>
+                <th>Description</th>
+                <th>Document</th>
+                <th>Video</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lecon in lecons %}
+            <tr>
+                <td><a href="{{ path('lecon_show', { 'id': lecon.id }) }}">{{ lecon.id }}</a></td>
+                <td>{{ lecon.titre }}</td>
+                <td>{% if lecon.debut %}{{ lecon.debut|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if lecon.fin %}{{ lecon.fin|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ lecon.description }}</td>
+                <td>{{ lecon.document }}</td>
+                <td>{{ lecon.video }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('lecon_show', { 'id': lecon.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('lecon_edit', { 'id': lecon.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   
+{% endblock %}

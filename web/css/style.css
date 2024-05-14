@@ -1,0 +1,40 @@
+body {
+    /* font-family: 'Courier New', Courier, monospace; */
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.page-titre {
+    border-bottom: 1px solid slategray;
+    margin: 10px 0 20px;
+}
+
+label {
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+}
+
+.btn {
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+}
+
+input, textarea, .value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 103%;
+}
+
+table .fa {
+    margin: 0 4px;
+}
+
+.help-block, label.error {
+    font-size: 80%;
+    color: red;
+}
+
+.bas-page{
+    width: 100%;
+    position: absolute;
+    bottom: 1em;
+    left: 0em;
+    right: 0em;
+}

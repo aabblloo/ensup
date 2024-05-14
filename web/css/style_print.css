@@ -1,0 +1,13 @@
+body{
+    /* font-family: 'Courier New', Courier, monospace; */
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.help-block{
+    font-size: 80%;
+}
+
+tr, .saut{
+    page-break-inside: avoid;
+}

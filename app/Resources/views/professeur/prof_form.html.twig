@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+
+        <div class="col-4">
+            <table class="table table-borderless table-hover">
+                <tr>
+                    <td class="p-0" style="width:40%"></td>
+                    <td class="p-0"></td>
+                </tr>
+                {{ form_row(form.prenom) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.specialite) }}
+                {{ form_row(form.telephone) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        <a href="{{ path('prof_index') }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-4">
+            <table class="table table-borderless table-hover">
+                <tr>
+                    <td class="p-0" style="width:40%"></td>
+                    <td class="p-0"></td>
+                </tr>
+                {{ form_row(form.taux) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.dateEntree) }}
+                {{ form_row(form.dateSortie) }}
+            </table>
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $('#autre').attr('class');
+            $('#autre').attr('class', attr + ' active');
+            attr = $('#prof_new').attr('class');
+            $('#prof_new').attr('class', attr + ' active');
+        });
+    </script>
+{% endblock %}

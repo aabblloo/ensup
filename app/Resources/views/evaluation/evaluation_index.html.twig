@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}Liste Evaluations{% endblock %}
+
+{% block titre %}Liste des Evaluations{% endblock %}
+
+{% block body %}
+
+    <p>
+        <a class="btn btn-link" href="{{ path('evaluation_new') }}">
+            <i class="fa fa-sm_ fa-calculator"></i>
+            Enregistrer une évaluation
+        </a>
+    </p>
+
+    <div style="margin: 10px;">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="row justify-content-center">
+            <div class="col-md-1">Filtrer par</div>
+            <div class="col-md-2">
+                {{ form_widget(form.annee) }}
+                {{ form_errors(form.annee) }}
+            </div>
+            <div class="col-md-5">
+                {{ form_widget(form.classe) }}
+                {{ form_errors(form.classe) }}
+            </div>
+            {#<div class="col-md-2">#}
+            {#    {{ form_widget(form.specialite) }}#}
+            {#    {{ form_errors(form.specialite) }}#}
+            {#</div>#}
+            <div class="col-md-1">
+                <button class="btn btn-sm btn-success">OK</button>
+            </div>
+
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <table id="table-sort" class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Année</th>
+            <th>Niveau d'étude</th>
+            <th>Evaluation</th>
+            <th>UE</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for evaluation in evaluations %}
+            <tr>
+                <td nowrap>{{ evaluation.anScolaire.nom }}</td>
+                <td>{{ evaluation.ue.classe.nom }}</td>
+                <td nowrap>
+                    <a href="{{ path('evaluation_show', {'id': evaluation.id}) }}"
+                       title="Afficher">
+                        {{ evaluation.ue.semestre.nom }}
+                    </a>
+                </td>
+                <td>{{ evaluation.ue.nom }}</td>
+                <td nowrap class="text-right">
+                    <a href="{{ path('evaluation_show', {'id': evaluation.id}) }}" class="btn btn-link py-0"
+                       title="Afficher">
+                        <i class="fa fa-sm_ fa-file"></i>
+                        Afficher
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_bulletin").addClass("active");
+            $("#evaluation_index").addClass("active");
+
+            $(".chosen-select").chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: "Option non trouvée !",
+                    //width: "100%",
+                }
+            );
+        });
+    </script>
+{% endblock %}

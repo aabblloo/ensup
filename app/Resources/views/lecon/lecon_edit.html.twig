@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+	Leçon edit
+{% endblock %}
+
+{% block titre %}
+	Modifier léçon
+	<span class="text-success">{{ lecon.titre }}</span>
+{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-4">
+
+			{{ form_start(form) }}
+			<table class="table table-borderless table-hover table-sm">
+				<tr>
+					<td style="width:40%"></td>
+					<td></td>
+				</tr>
+
+				{{ form_row(form.titre) }}
+				{{ form_row(form.debut) }}
+				{{ form_row(form.fin) }}
+				{{ form_row(form.description) }}
+				{{ form_row(form.docFile) }}
+				{{ form_row(form.videoFile) }}
+
+				<tr>
+					<td></td>
+					<td>
+						<button class="btn btn-primary btn-sm">
+							<i class="fa fa-sm fa-save"></i>
+							Enregistrer
+						</button>
+
+						<a href="{{ path('lecon_new', {'id': classeMatiere.id}) }}" class="btn btn-primary btn-sm">
+							<i class="fa fa-sm fa-arrow-left"></i>
+							Annuler
+						</a>
+					</td>
+				</tr>
+			</table>
+			{{ form_end(form) }}
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+            $("#admin").addClass("active");
+            $("#classe_index").addClass("active");
+        });
+	</script>
+{% endblock %}

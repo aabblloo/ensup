@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    Supprimer la section
+{% endblock %}
+
+{% block titre %}
+    <a href="{{ path('departement_show', {'id': section.departement.id}) }}" class="text-success">
+        {{ section.departement.nom }}
+    </a>
+    <span class="font-weight-normal">/</span>
+    Supprimer la section
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer la section suivante ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <th style="width: 40%">Code</th>
+                    <td class="value">{{ section.code }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td class="value">{{ section.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Département</th>
+                    <td class="value">{{ section.departement.nom }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i>
+                            Supprimer
+                        </button>
+                        <a href="{{ path('departement_show', {'id': section.departement.id}) }}"
+                           class="btn btn-sm btn-success">
+                            <i class="fas fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#section_index").attr("class");
+            $("#section_index").attr("class", attr + " active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer cette section ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

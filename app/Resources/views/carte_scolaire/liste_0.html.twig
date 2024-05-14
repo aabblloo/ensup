@@ -1,0 +1,84 @@
+{# carte scolaire liste #}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {{ app_name }} - Carte d'identité scolaire
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ absolute_url(asset('bootstrap/css/bootstrap.min.css')) }}">
+        <style>
+            body{
+                font-size: 12px;
+            }
+
+            .value{font-family: "Courier New", monospace}
+        </style>
+    </head>
+
+    <body>
+        <div style="margin: auto;">
+
+            <div class="messages">
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible alert-{{ type }}" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div>
+                {% for etd in etudiants %}
+                    <div class="border rounded float-left" 
+                         style="width: 85mm; height: 53mm; margin-right: 15mm; margin-bottom: 8mm; padding: 1mm;
+                         page-break-inside: avoid;">
+
+                        <div style="width: 56mm; float: left;">
+                            <img class="img-fluid" src="{{ absolute_url(asset('images/logo_ensup_300x211.jpg')) }}">
+
+                            <div style="margin-top: 4mm; margin-left: 2mm; width: 55mm; overflow: hidden;">
+                                <b>Nom : </b><span class="value">{{ etd.nom|upper }}</span><br>
+                                <b>Prénom : </b><span class="value">{{ etd.prenom|upper }}</span><br>
+                                <b>Né le : </b><span class="value">{{ etd.date_naiss }}</span><br>
+                                <b>Téléphone : </b><span class="value">{{ etd.telephone }}</span><br>
+                                <b>Validité : </b><span class="value">Octobre 2019</span><br>
+                                <b>Filière : </b><span class="value">{{ etd.filiere|upper }}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center" style="width: 26mm; float: right;">
+                            <img class="img-thumbnail" src="{{ absolute_url(asset('images/etudiants/'~etd.photo)) }}">
+                            <div style="margin-top: 1mm; height: 13mm;">
+                                <img class="img-fluid" style="width: 12mm;" src="{{ absolute_url(asset('images/signature.png')) }}">
+                            </div>
+                        </div>
+
+                        <div style="clear: both;"></div>
+
+                        <div class="align-items-end text-white text-center text-bold rounded-bottom" style="background: #1361c8;">
+                            Carte d'étudiant
+                        </div>
+
+                    </div>
+                {% else %}
+                    <h1>Pas de résultat</h1>
+                {% endfor %}
+            </div>
+
+            <div style="clear: both;"></div>
+
+        </div>
+
+        <script src="{{ absolute_url(asset('js/jquery.min.js')) }}"></script>
+        <script src="{{ absolute_url(asset('js/popper.min.js')) }}"></script>
+        <script src="{{ absolute_url(asset('bootstrap/js/bootstrap.min.js')) }}"></script>
+    </body>
+
+</html>

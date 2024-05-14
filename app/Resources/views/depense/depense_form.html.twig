@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover table-sm_">
+                {{ form_row(form.date) }}
+                {{ form_row(form.type) }}
+                {{ form_row(form.ref) }}
+                {{ form_row(form.libelle) }}
+                {{ form_row(form.montant) }}
+                {{ form_row(form.anScolaire) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save fa-sm"></i>
+                            {{ button_label|default('Enregistrer') }}
+                        </button>
+
+                        <a class="btn btn-primary btn-sm" href="{{ path('depense_index') }}">
+                            <i class="fa fa-arrow-left fa-sm"></i>
+                            {{ button_label|default('Annuler') }}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $('#autre').attr('class');
+            $('#autre').attr('class', attr + ' active');
+            var attr = $('#depense_new').attr('class');
+            $('#depense_new').attr('class', attr + ' active');
+
+            $(".chosen-select").chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: "Option non trouvée !",
+                    //disable_search_threshold: 10,
+                    width: "100%",
+                }
+            );
+        });
+    </script>
+{% endblock %}

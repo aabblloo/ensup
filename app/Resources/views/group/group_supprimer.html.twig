@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'form_theme.html.twig' %}
+
+{% block title %}Supprimer groupe{% endblock %}
+{% block titre %}
+    <h1>Supprimer le groupe</h1>
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer le groupe suivant ?</h4>
+    
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-condensed">
+                <tr>
+                    <td><label>Nom</label></td>
+                    <td>{{ group.name }}</td>
+                </tr>
+                <tr>
+                    <td><label>Rôle</label></td>
+                    <td>{{ group.role }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-danger">Supprimer</button>
+                        <a href="{{ path('group_liste') }}" class="btn btn-sm btn-success">Annuler</a>
+                    </td>
+                </tr>
+            </table>            
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#user_index").addClass("active");
+        });
+    </script>
+{% endblock %}

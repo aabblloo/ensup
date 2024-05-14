@@ -1,0 +1,77 @@
+{# parent form #}
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<div class="row">
+    <div class="col-4">
+        <table class="table table-borderless table-hover">
+            <tr>
+                <td style="width: 40%;">
+                    <label for="{{ form.prenom.vars.id }}">
+                        Prénom <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.prenom) }}
+                    {{ form_errors(form.prenom) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="{{ form.nom.vars.id }}">
+                        Nom <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.nom) }}
+                    {{ form_errors(form.nom) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="{{ form.telephone.vars.id }}">
+                        Téléphone <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.telephone) }}
+                    {{ form_errors(form.telephone) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="{{ form.email.vars.id }}">
+                        Email
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.email) }}
+                    {{ form_errors(form.email) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i>
+                        Enregistrer
+                    </button>
+
+                    <a href="{{ path('parents_index') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-arrow-left"></i>
+                        Annuler
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+                    
+{{ form_rest(form) }}
+{{ form_end(form) }}

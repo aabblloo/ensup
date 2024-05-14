@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ titre }}
+{% endblock %}
+
+{% block titre %}
+{{ titre }}
+{% endblock %}
+
+{% block body %}
+<div class="breadcrumb_ mb-3">
+    <a class="btn btn-link" href="{{ path('matiere_new') }}">
+        <i class="fa fa-sm fa-superscript"></i>
+        Enregistrer une matiere
+    </a>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="value">
+        {% for matiere in matieres %}
+        <tr>
+            <td>{{ matiere.code|upper }}</td>
+            <td>{{ matiere.nom }}</td>
+            <td>
+                <a href="{{ path('matiere_edit', {'id': matiere.id}) }}" title="Modifier">
+                    <i class="fa fa-sm fa-edit"></i>
+                </a>
+
+                <a href="{{ path('matiere_delete', {'id': matiere.id}) }}" title="Supprimer">
+                    <i class="fa fa-sm fa-trash-alt text-danger"></i>
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <caption>Pas d'enregistrement</caption>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function () {
+        var attr = $("#admin").attr("class");
+        $("#admin").attr("class", attr + " active");
+        attr = $("#matiere_index").attr("class");
+        $("#matiere_index").attr("class", attr + " active");
+    });
+</script>
+{% endblock %}

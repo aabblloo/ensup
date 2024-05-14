@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>
+        <a href="{{ path('user_new') }}" class="btn btn-link">
+            <i class="fa fa-user"></i>
+            Ajouter un utilisateur
+        </a>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('group_index') }}" class="btn btn-link">
+                <i class="fa fa-user-friends"></i>
+                Liste des groupes
+            </a>
+        {% endif %}
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>Groupes</th>
+            <th>Etat</th>
+            <th>Département</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for u in users %}
+            <tr>
+                <td>{{ u.name }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                <td>
+                    {% for g in u.groups %}
+                        {{ g.name }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if u.isActive %}
+                        <i class="fa fa-check"></i>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ u.departement ? u.departement.nom : '' }}
+                </td>
+
+                <td class="text-right">
+                    <a href="{{ path('user_edit', {'id': u.id}) }}" class="btn btn-link py-0" title="Editer">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{{ path('user_delete', {'id': u.id}) }}" class="btn btn-link py-0 text-danger" title="Supprimer">
+                        <i class="fa fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#user_index").attr("class");
+            $("#user_index").attr("class", attr + " active");
+        });
+    </script>
+{% endblock %}

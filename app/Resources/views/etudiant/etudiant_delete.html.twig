@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer ce (cette) étudiant(e) ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                    <tr>
+                        <td>Matricule</td>
+                        <td class="value">{{ etudiant.matricule }}</td>
+                    </tr>
+                    <tr>
+                        <td>Prénom</td>
+                        <td class="value">{{ etudiant.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nom</td>
+                        <td class="value">{{ etudiant.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Téléphone</td>
+                        <td class="value">{{ etudiant.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                                <i class="fa fa-sm fa-trash-alt"></i>
+                                Supprimer
+                            </button>
+                            <a href="{{ path('etudiant_index') }}" class="btn btn-sm btn-success">
+                                <i class="fa fa-sm fa-arrow-left"></i>
+                                Annuler
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#gestion_scolaire").attr("class");
+            $("#gestion_scolaire").attr("class", attr + " active");
+            attr = $("#etudiant_index").attr("class");
+            $("#etudiant_index").attr("class", attr + " active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer ce (cette) étudiant(e) ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

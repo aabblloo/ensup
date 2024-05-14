@@ -1,0 +1,55 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}Liste des étudiants{% endblock %}
+
+{% block body %}
+    <h5>Liste des étudiants dont le seuil est inférieur à <span class="text-danger">{{ critere.seuil }}%</span></h5>
+
+    <h6>
+        Classe :
+        <span class="value">{{ critere.classe.code }}</span>
+        {% if critere.lettre %}
+            <span class="value">{{ critere.lettre }}</span>
+        {% endif %}
+    </h6>
+
+    <h6>
+        Année scolaire :
+        <span class="value">{{ critere.annee.nom }}</span>
+    </h6>
+
+    <h6>
+        Nombre :
+        <span class="value">{{ etdClasses | length }}</span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <th style="width: 26%;">Prénom</th>
+        <th style="width: 26%;">Nom</th>
+        <th style="width: 16%;">Montant dû</th>
+        <th style="width: 16%;">Montant payé</th>
+        <th style="width: 16%;">Reste</th>
+    </thead>
+
+    <tbody class="value">
+
+        {% for ec in etdClasses %}
+            {# {% if(ec.paiementsTotal < (ec.montant * critere.seuil)/100 ) %} #}
+            <tr>
+                <td>{{ ec.prenom }}</td>
+                <td>{{ ec.nom }}</td>
+                <td class="text-right">{{ ec.montant|formatFr }}</td>
+                <td class="text-right">{{ ec.payer|formatFr }}</td>
+                <td class="text-right">{{ ec.reste|formatFr }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}

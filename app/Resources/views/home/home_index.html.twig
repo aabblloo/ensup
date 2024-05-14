@@ -1,0 +1,268 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block titre %}Tableau de bord{% endblock %}
+
+{% block body %}
+    {% if(is_granted('ROLE_DIRECTEUR')) %}
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">Situation des paiements par année</div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tr class="bg-info text-white">
+                                <th>Anneé</th>
+                                <th>Montant dû</th>
+                                <th>Montant payé</th>
+                                <th>Reste</th>
+                                <th>Taux (%)</th>
+                            </tr>
+                            {% for item in sit_annee_paie %}
+                                <tr>
+                                    <td>{{ item.annee }}</td>
+                                    <td class="text-right">{{ item.montant_du | formatFr }}</td>
+                                    <td class="text-right">{{ item.montant_paye | formatFr }}</td>
+                                    <td class="text-right">{{ item.reste | formatFr }}</td>
+                                    <td class="text-right">{{ item.taux | formatFr(2) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <canvas id="canvas1"></canvas>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row mt-5">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">Situation des étudiants par sexe</div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <tr class="bg-info text-white">
+                            <th>Anneé</th>
+                            <th>Homme</th>
+                            <th>Femme</th>
+                            <th>Total</th>
+                        </tr>
+                        {% for item in sit_annee_sexe %}
+                            <tr>
+                                <td>{{ item.annee }}</td>
+                                <td class="text-right">
+                                    {{ item.masculin | formatFr }}
+                                    {% if item.total > 0 %}
+                                        {% set taux = item.masculin * 100 / item.total %}
+                                        &nbsp;-&nbsp; {{ taux | formatFr }}%
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">
+                                    {{ item.feminin | formatFr }}
+                                    {% if item.total > 0 %}
+                                        {% set taux = item.feminin * 100 / item.total %}
+                                        &nbsp;-&nbsp; {{ taux | formatFr }} %
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">{{ item.total | formatFr }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <canvas id="canvas2"></canvas>
+        </div>
+    </div>
+
+    {#<div class="row align-items-center justify-content-center" style="margin-top: 80px">
+        <div class="col-5">
+            #}{# <img class="img-fluid" src="{{ asset('images/logo_ensup_300x211.jpg') }}"> #}{#
+            <img class="img-fluid" src="{{ asset('images/background.jpg') }}">
+        </div>
+    </div>#}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('chart.js/Chart.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('chart.js/utils.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $('#home').attr('class');
+            $('#home').attr('class', attr + ' active');
+        });
+
+        //graph 1
+        {% if(is_granted('ROLE_DIRECTEUR')) %}
+        {% set annee = [] %}
+        {% for item in sit_annee_paie %}
+        {% set annee = annee|merge([item.annee]) %}
+        {% endfor %}
+
+        var color = Chart.helpers.color;
+        var horizontalBarChartData = {
+            labels: {{ annee|json_encode|raw }},
+            datasets: [
+                {
+                    label: 'Montant dû',
+                    backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.green,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_paie %}
+                    {% set value = value|merge([item.montant_du|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                },
+                {
+                    label: 'Montant payé',
+                    backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.yellow,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_paie %}
+                    {% set value = value|merge([item.montant_paye|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                },
+                {
+                    label: 'Reste',
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.red,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_paie %}
+                    {% set value = value|merge([item.reste|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                }
+            ]
+
+        };
+        {% endif %}
+
+        //graph 2
+        {% set annee = [] %}
+        {% for item in sit_annee_sexe %}
+        {% set annee = annee|merge([item.annee]) %}
+        {% endfor %}
+
+        var color2 = Chart.helpers.color;
+        var horizontalBarChartData2 = {
+            labels: {{ annee|json_encode|raw }},
+            datasets: [
+                {
+                    label: 'Total',
+                    backgroundColor: color2(window.chartColors.purple).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.purple,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_sexe %}
+                    {% set value = value|merge([item.total|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                },
+                {
+                    label: 'Masculin',
+                    backgroundColor: color2(window.chartColors.blue).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.blue,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_sexe %}
+                    {% set value = value|merge([item.masculin|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                },
+                {
+                    label: 'Féminin ',
+                    backgroundColor: color2(window.chartColors.orange).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.orange,
+                    borderWidth: 1,
+
+                    {% set value = [] %}
+                    {% for item in sit_annee_sexe %}
+                    {% set value = value|merge([item.feminin|strToNbre]) %}
+                    {% endfor %}
+
+                    data: {{ value|json_encode }}
+                },
+            ]
+
+        };
+
+        window.onload = function () {
+
+            //graph 1
+            {% if(is_granted('ROLE_DIRECTEUR')) %}
+            var ctx1 = document.getElementById('canvas1').getContext('2d');
+            window.myHorizontalBar = new Chart(ctx1, {
+                type: 'bar', //horizontalBar
+                data: horizontalBarChartData,
+                options: {
+                    // Elements options apply to all of the options unless overridden in a dataset
+                    // In this case, we are setting the border of each horizontal bar to be 2px wide
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                        }
+                    },
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Situation des paiements par année'
+                    }
+                }
+            });
+            {% endif %}
+
+            //graph 2
+            var ctx2 = document.getElementById('canvas2').getContext('2d');
+            window.myHorizontalBar2 = new Chart(ctx2, {
+                type: 'bar', //horizontalBar
+                data: horizontalBarChartData2,
+                options: {
+                    // Elements options apply to all of the options unless overridden in a dataset
+                    // In this case, we are setting the border of each horizontal bar to be 2px wide
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                        }
+                    },
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Situation des étudiants par sexe'
+                    }
+                }
+            });
+
+        };
+
+    </script>
+{% endblock %}

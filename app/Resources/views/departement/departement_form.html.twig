@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width: 20%"></td>
+                    <td></td>
+                </tr>
+                {# {{ form_row(form.code) }} #}
+                {{ form_row(form.nom) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set lien = path('departement_index') %}
+                        {% if departement.id %}
+                            {% set lien = path('departement_show', {'id': departement.id}) %}
+                        {% endif %}
+
+                        <a href="{{ lien }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#departement_index").addClass("active");
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+	Leçon new
+{% endblock %}
+
+{% block titre %}
+	Léçons de
+	<span class="text-success">{{ classeMatiere.matiere.code }}</span>
+	de
+	<span class="text-success">{{ classeMatiere.classe.code }}</span>
+{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-4">
+
+			{{ form_start(form) }}
+			<table class="table table-borderless table-hover table-sm">
+				<tr>
+					<td style="width:40%"></td>
+					<td></td>
+				</tr>
+
+				{{ form_row(form.titre) }}
+				{{ form_row(form.debut) }}
+				{{ form_row(form.fin) }}
+				{{ form_row(form.description) }}
+				{{ form_row(form.docFile) }}
+				{{ form_row(form.videoFile) }}
+
+				<tr>
+					<td></td>
+					<td>
+						<button class="btn btn-primary btn-sm">
+							<i class="fa fa-sm fa-save"></i>
+							Enregistrer
+						</button>
+
+						<a href="{{ path('classe_matiere_new', {'id': classeMatiere.classe.id}) }}" class="btn btn-primary btn-sm">
+							<i class="fa fa-sm fa-arrow-left"></i>
+							Annuler
+						</a>
+					</td>
+				</tr>
+			</table>
+			{{ form_end(form) }}
+		</div>
+
+		{% if lecons %}
+			<div class="col-8">
+				<table class="table table-bordered table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Titre</th>
+							<th>Valable jusqu'au</th>
+							<th>Document</th>
+							<th>Vidéo</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody class="value">
+						{% for lecon in lecons %}
+							<tr>
+								<td>{{ lecon.titre }}</td>
+								<td>{{ lecon.fin|dateFr }}</td>
+								<td>
+									<a href="{{ asset('cours/'~lecon.document) }}" target="_blank">
+										Document
+									</a>
+								</td>
+								<td>
+                                    {% if lecon.video %}
+                                        <a href="{{ path('lecon_show', {'id': lecon.id}) }}" target="_blank">
+                                            Vidéo
+                                        </a>
+                                    {% endif %}
+								</td>
+								<td>
+									<a href="{{ path('lecon_edit', {'id': lecon.id}) }}" title="Modifier">
+										<i class="fa fa-sm fa-edit"></i>
+									</a>
+
+									<a href="{{ path('lecon_delete', {'id': lecon.id}) }}" title="Supprimer">
+										<i class="fa fa-sm fa-trash-alt text-danger"></i>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+	<script>
+		$(function () {
+$("#admin").addClass("active");
+$("#classe_index").addClass("active");
+});
+	</script>
+{% endblock %}

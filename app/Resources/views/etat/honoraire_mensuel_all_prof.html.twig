@@ -1,0 +1,61 @@
+{% extends "base_print.html.twig" %}
+{% set titre = 'Honoraire mensuel des professeurs' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h5>{{ titre }}</h5>
+
+    <h6>
+        Année scolaire :
+        <span class="value font-weight-bold">
+            {{ annee.nom }}
+        </span>
+    </h6>
+
+    <h6>
+        Mois :
+        <span class="value font-weight-bold">
+            {{ mois }}
+        </span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm"
+           style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <th style="width: 35%">Prénom</th>
+        <th style="width: 35%">Nom</th>
+        <th style="width: 30%">Montant</th>
+        </thead>
+
+        <tfoot>
+        <tr>
+            <th colspan="2">Total</th>
+            <th class="value text-right"
+                style="padding-right: 10px">{{ total|formatFr }}
+            </th>
+        </tr>
+        </tfoot>
+
+        <tbody class="value">
+
+        {% for cr in cours %}
+            <tr>
+                <td>{{ cr.prenom }}</td>
+                <td>{{ cr.nom }}</td>
+                <td class="text-right" style="padding-right: 10px">
+                    {{ cr.montant|formatFr }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

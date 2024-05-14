@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer l'année académique suivante ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                    <tr>
+                        <td>Libellé</td>
+                        <td class="value">{{ anScolaire.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                                <i class="fa fa-sm fa-trash-alt"></i>
+                                Supprimer
+                            </button>
+                            <a href="{{ path('an_scolaire_index') }}" class="btn btn-sm btn-success">
+                                <i class="fa fa-sm fa-arrow-left"></i>
+                                Annuler
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#an_scolaire_index").attr("class");
+            $("#an_scolaire_index").attr("class", attr + " active");
+
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer cette année académique ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

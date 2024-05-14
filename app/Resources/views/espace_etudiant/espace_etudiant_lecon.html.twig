@@ -1,0 +1,52 @@
+{% extends 'espace_etudiant/base_espace_etudiant.html.twig' %}
+
+{% block title %}Espace Etudiant
+{% endblock %}
+
+{% block titre %}
+	<span class="text-center" style="display:block">
+		Leçons de :
+		{{ classeMatiere.matiere.code }}
+	</span>
+{% endblock %}
+
+{% block body %}
+	<div class="row justify-content-center">
+		<div class="col-10">
+
+			{% if lecons %}
+				<table class="table table-bordered table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Titre</th>
+							<th>Valable jusqu'au</th>
+							<th>Document</th>
+							<th>Vidéo</th>
+						</tr>
+					</thead>
+					<tbody class="value">
+						{% for lecon in lecons %}
+							<tr>
+								<td>{{ lecon.titre }}</td>
+								<td>{{ lecon.fin|dateFr }}</td>
+								<td>
+									<a href="{{ asset('cours/'~lecon.document) }}" target="_blank">
+										Document
+									</a>
+								</td>
+								<td>
+									{% if lecon.video %}
+										<a href="{{ path('espace_etudiant_lecon_show', {'id': lecon.id}) }}" target="_blank">
+											Vidéo
+										</a>
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}

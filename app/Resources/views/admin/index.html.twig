@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des personnes{% endblock %}
+{% block titre %}
+    <h1>Tâches administrateur</h1>
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_SUPER') %}
+        <!-- -->
+    {% endif %}
+
+    <ul>
+        <li>Liste des taches administration</li>
+    </ul>
+{% endblock %}

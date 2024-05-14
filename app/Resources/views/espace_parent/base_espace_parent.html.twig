@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {{ app_name }}
+            -
+            {% block title %}Bienvenue !{% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('fontawesome/css/fontawesome-all.min.css') }}">
+        {% block stylesheets %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            {% block menu_top %}
+                {{ include('espace_parent/espace_parent_menu_top.html.twig') }}
+            {% endblock %}
+
+            <header class="page-titre">
+                <h4>
+                    {% block titre %}{% endblock %}
+                </h4>
+            </header>
+
+            {{ include('default/flash_messages.html.twig') }}
+
+            {% block body %}{% endblock %}
+        </div>
+
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/popper.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/my_functions.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

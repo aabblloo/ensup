@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_ mb-2">
+        <a class="btn btn-link" href="{{ path('classe_new') }}">
+            <i class="fa fa-sm_ fa-chalkboard-teacher"></i>
+            Enregistrer un niveau d'étude
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th>Cycle</th>
+            <th class="text-center">Ordre</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for classe in classes %}
+            <tr>
+                <td>{{ classe.code|upper }}</td>
+                <td>{{ classe.nom }}</td>
+                <td>{{ classe.cycle.code }}</td>
+                <td class="text-center">{{ classe.ordre }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('classe_edit', {'id': classe.id}) }}" class="btn btn-link py-0" title="Modifier">
+                        <i class="fa fa-sm_ fa-edit"></i>
+                    </a>
+
+                    <a href="{{ path('classe_delete', {'id': classe.id}) }}" class="btn btn-link py-0 text-danger"
+                       title="Supprimer">
+                        <i class="fa fa-sm_ fa-trash-alt"></i>
+                    </a>
+
+                    {# <a href="{{ path('classe_matiere_new', {'id': classe.id}) }}" class="btn btn-link py-0"
+                       title="Module">
+                        Modules
+                    </a> #}
+                </td>
+            </tr>
+        {% else %}
+            <caption>
+                Pas d'enregistrement
+            </caption>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#classe_index").attr("class");
+            $("#classe_index").attr("class", attr + " active");
+        });
+    </script>
+{% endblock %}

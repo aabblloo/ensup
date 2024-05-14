@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_ mb-3">
+        <a class="btn btn-link" href="{{ path('ue_new') }}">
+            <i class="fa fa-sm_ fa-chalkboard-teacher"></i>
+            Enregistrer une UE
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Code UE</th>
+            <th>Nom</th>
+            <th>Spécialité</th>
+            <th>Département</th>
+            <th>Semestre</th>
+            <th class="text-right">Nbre de crédit</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for ue in ues %}
+            <tr>
+                <td>{{ ue.code|upper }}</td>
+                <td>{{ ue.nom }}</td>
+                <td>{{ ue.specialite.nom }}</td>
+                <td>{{ ue.specialite.departement.nom }}</td>
+                <td>{{ ue.semestre.nom }}</td>
+                <td class="text-right">{{ ue.credit }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('ue_edit', {'id': ue.id}) }}" class="btn btn-link py-0" title="Modifier">
+                        <i class="fa fa-sm_ fa-edit"></i>
+                    </a>
+
+                    <a href="{{ path('ue_delete', {'id': ue.id}) }}" class="btn btn-link py-0" title="Supprimer">
+                        <i class="fa fa-sm_ fa-trash-alt text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <caption>
+                Pas d'enregistrement
+            </caption>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#ue_index").attr("class");
+            $("#ue_index").attr("class", attr + " active");
+        });
+    </script>
+{% endblock %}

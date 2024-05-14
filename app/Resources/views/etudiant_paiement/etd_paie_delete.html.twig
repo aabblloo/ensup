@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Delete Paiement
+{% endblock %}
+
+{% block titre %}
+    Suppression Paiement de {{ etudiant.prenomNomMle }} - {{ etudiant.lastClasse }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer le paiement suivant ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover">
+                <tbody>
+                    <tr>
+                        <td>Date</td>
+                        <td class="text-monospace">{{ paiement.date|dateFr }}</td>
+                    </tr>
+                    <tr>
+                        <td>Montant</td>
+                        <td class="text-monospace">{{ paiement.montant|formatFr }}</td>
+                    </tr>
+                    <tr>
+                        <td>Réf.</td>
+                        <td class="text-monospace">{{ paiement.ref }}</td>
+                    </tr>                    
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" id="delete_btn" type="button">
+                                <i class="fa fa-trash-alt"></i>
+                                Supprimer
+                            </button>
+                            <a href="{{ path('etd_paie_index', {'id': etudiant.id}) }}" 
+                               class="btn btn-sm btn-success">
+                                <i class="fa fa-arrow-left"></i>
+                                Annuler
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $('#gestion_scolaire').addClass('active');
+            $('#paiement_index').addClass('active');
+
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer ce paiement ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

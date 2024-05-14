@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {{ app_name }} -
+        {% block title %}Etats !{% endblock %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ absolute_url(asset('bootstrap/css/bootstrap.min.css')) }}">
+    <link rel="stylesheet" href="{{ absolute_url(asset('css/style.css')) }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="messages">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-{{ type }}" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message | raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {% block body %}{% endblock %}
+</div>
+
+<script src="{{ absolute_url(asset('js/jquery.min.js')) }}"></script>
+<script src="{{ absolute_url(asset('js/popper.min.js')) }}"></script>
+<script src="{{ absolute_url(asset('bootstrap/js/bootstrap.min.js')) }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+
+</html>

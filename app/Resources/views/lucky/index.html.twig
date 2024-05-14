@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Hello
+    {{ controller_name }}!
+{% endblock %}
+
+{% block titre %}
+    <h3>
+        Hello
+        {{ controller_name }}! ✅
+    </h3>
+{% endblock %}
+
+{% block body %}
+    <div>
+        This friendly message is coming from:
+        <ul>
+            <li>
+                Your controller at
+                <code>
+                    <a href="{{ 'src/Controller/LuckyController.php'|file_link(0) }}">src/Controller/LuckyController.php</a>
+                </code>
+            </li>
+            <li>
+                Your template at
+                <code>
+                    <a href="{{ 'templates/lucky/user_index.html.twig'|file_link(0) }}">templates/lucky/index.html.twig</a>
+                </code>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

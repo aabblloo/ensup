@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_">
+        <a class="btn btn-link" href="{{ path('evaluation_edit', {'id': evaluation.id}) }}">
+            <i class="fa fa-sm_ fa-edit"></i>
+            Modifier
+        </a>
+
+        <a class="btn btn-link" href="{{ path('evaluation_index') }}">
+            <i class="fa fa-sm_ fa-list"></i>
+            Liste
+        </a>
+
+        <a class="btn btn-link text-danger" href="{{ path('evaluation_delete', {'id': evaluation.id}) }}">
+            <i class="fa fa-sm_ fa-trash-alt"></i>
+            Supprimer
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-hover table-sm_">
+                <tbody>
+                <tr style="width: 40%;">
+                    <th>Evaluation</th>
+                    <td class="value">
+                        {{ evaluation.ue.semestre.nom }}
+                        {{ evaluation.anScolaire.nom }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Session</th>
+                    <td class="value">{{ evaluation.session }}</td>
+                </tr>
+                <tr>
+                    <th>Niveau d'étude</th>
+                    <td class="value">{{ evaluation.ue.classe.nom }}</td>
+                </tr>
+
+                <tr>
+                    <th>UE</th>
+                    <td class="value">{{ evaluation.ue.nom }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <p>
+        <a class="btn btn-link" href="{{ path('evaluation_detail_edit', {'id': evaluation.id}) }}">
+            <i class="fa fa-sm_ fa-calculator"></i>
+            <i class="fa fa-sm_ fa-arrow-down"></i>
+            Ajouter ou Modifier les notes
+        </a>
+    </p>
+
+    <table class="table table-hover table-sm_">
+        <thead>
+        <tr>
+            <th>Etudiant</th>
+            <th class="text-right">Note de classe</th>
+            <th class="text-right">Note Examen</th>
+            <th class="text-right">Crédit</th>
+            <th class="text-right">Moyenne</th>
+            <th class="text-right">Moyenne Coéff.</th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for note in notes %}
+            <tr>
+                <td>
+                    <a href="{{ path('etudiant_show', {'id': note.etudiant.id}) }}" target="_blank">
+                        {{ note.etudiant.prenomNom }}
+                    </a>
+                </td>
+
+                <td class="text-right">
+                    {{ note.noteClasse ? note.noteClasse|formatFr(2) : '' }}
+                </td>
+
+                <td class="text-right">
+                    {{ note.noteCompo ? note.noteCompo|formatFr(2) : '' }}
+                </td>
+
+                <td class="text-right">
+                    {{ note.credit ? note.credit|formatFr : '' }}
+                </td>
+
+                <td class="text-right">
+                    {{ note.moyenne ? note.moyenne|formatFr(2) : '' }}
+                </td>
+
+                <td class="text-right">
+                    {{ note.moyenneCoeff ? note.moyenneCoeff|formatFr(2) : '' }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#gestion_bulletin").addClass("active");
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+
+        AppBundle\Entity\Etudiant:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        app_student_provider:
+            entity:
+                class: AppBundle:Etudiant
+                property: telephone
+
+        our_db_provider:
+            entity:
+                class: AppBundle:User
+                property: username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login_student_area:
+            pattern: ^/espace/etudiant/login$
+            anonymous: true
+
+        login_area:
+            pattern: ^/login$
+            anonymous: true
+
+        student_space:
+            pattern: ^/espace/etudiant/
+            anonymous: false
+            form_login:
+                login_path: /espace/etudiant/login
+                check_path: /espace/etudiant/login_check
+                default_target_path: /espace/etudiant/
+            provider: app_student_provider
+            logout:
+                path: /espace/etudiant/logout
+                target: /espace/etudiant/login
+
+        secure_area:
+            pattern: ^/
+            anonymous: false
+            form_login: ~
+            provider: our_db_provider
+            logout:
+                path: /logout
+                target: /login
+            switch_user: true
+
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~
+
+    role_hierarchy:
+        ROLE_ETUDIANT:            ROLE_USER
+        ROLE_SAISIE:              ROLE_USER
+        ROLE_FINANCE:             ROLE_USER
+        ROLE_DER:                 ROLE_SAISIE
+        ROLE_SCOLARITE:           [ROLE_DER, ROLE_FINANCE]
+        ROLE_DIRECTEUR:           ROLE_SCOLARITE
+        ROLE_SUPER_ADMIN:         [ROLE_DIRECTEUR, ROLE_ALLOWED_TO_SWITCH]
+
+    access_control:
+        - { path: ^/espace/etudiant/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/utilisateur/changerMotPasse, roles: IS_AUTHENTICATED_FULLY }
+
+        - { path: ^/groupes, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/utilisateur/supprimer, roles: ROLE_SCOLARITE }
+
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/utilisateur, roles: ROLE_SCOLARITE }
+
+        - { path: ^/etudiant/ajouter, roles: ROLE_SAISIE }
+        - { path: ^/etudiant/modifier, roles: ROLE_SAISIE }
+        - { path: ^/etudiant/ajouter, roles: ROLE_SAISIE }
+        - { path: ^/etudiant/supprimer, roles: ROLE_SCOLARITE }
+
+        - { path: ^/paiement/ajouter, roles: ROLE_FINANCE }
+        - { path: ^/paiement/modifier, roles: ROLE_FINANCE } 
+        - { path: ^/paiement/supprimer, roles: ROLE_FINANCE }
+
+        - { path: ^/bulletin/fiche, roles: [ROLE_SCOLARITE, ROLE_DER] }
+
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

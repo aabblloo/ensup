@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer la dépense suivante ?</h4>
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <td>Réf.</td>
+                    <td class="value">{{ depense.ref }}</td>
+                </tr>
+                <tr>
+                    <td>Libellé</td>
+                    <td class="value">{{ depense.libelle }}</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td class="value">{{ depense.date|dateFr }}</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td class="value">{{ depense.montant|formatFr }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                            <i class="fa fa-sm fa-trash-alt"></i>
+                            Supprimer
+                        </button>
+                        <a href="{{ path('depense_index') }}" class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $('#autre').attr('class');
+            $('#autre').attr('class', attr + ' active');
+            var attr = $('#depense_index').attr('class');
+            $('#depense_index').attr('class', attr + ' active');
+
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer cette dépense ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

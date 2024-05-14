@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form,{'attr':{'id':'delete_form'}}) }}
+    Voulez-vous supprimer le professeur
+    <b>{{ professeur.prenomNom }}</b>
+    ?
+    <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+        <i class="fa fa-sm fa-trash"></i>
+        Supprimer
+    </button>
+
+    <a href="{{ path('prof_index') }}" class="btn btn-primary btn-sm">
+        <i class="fa fa-sm fa-arrow-left"></i>
+        Annuler
+    </a>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer ce professeur ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

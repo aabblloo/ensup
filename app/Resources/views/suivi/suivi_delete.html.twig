@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer le suivi suivant ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td class="value">{{ suivi.date|dateFr }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td class="value">{{ suivi.type }}</td>
+                </tr>
+                <tr>
+                    <th>Etudiant</th>
+                    <td class="value">{{ suivi.etudiant.prenomNom }}</td>
+                </tr>
+                <tr>
+                    <th>Observation</th>
+                    <td class="value">{{ suivi.observation }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                            <i class="fa fa-sm fa-trash-alt"></i>
+                            Supprimer
+                        </button>
+                        <a href="{{ path('banque_index') }}" class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $('#gestion_scolaire').attr('class');
+            $('#gestion_scolaire').attr('class', attr + ' active');
+            attr = $('#suivi_index').attr('class');
+            $('#suivi_index').attr('class', attr + ' active');
+
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer ce suivi ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

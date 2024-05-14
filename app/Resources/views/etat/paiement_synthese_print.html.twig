@@ -1,0 +1,120 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    FICHE DE PAIEMENT
+{% endblock %}
+
+{% block body %}
+
+    <p class="small">
+        BPE : 4895-torokorobougou Bamako République du Mali<br/>
+        NIF : 085104084Y<br/>
+        Tél. : 79 17 83 78 / 66 74 28 80<br/>
+    </p>
+
+    <h3 class="text-center_">REÇU DE PAIEMENT N°
+        {{ paiement.id|zeroFill }}
+    </h3>
+
+    <div class="row">
+        <div class="col-10">
+            <table class="table table-borderless table-sm" style="margin-top: 20px; margin-left: -5px;">
+
+                <tbody class="value">
+                    <tr>
+                        <th>Matricule</th>
+                        <td>{{ paiement.etudiant.matricule }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ paiement.etudiant.nom }}</td>
+                        <td>&nbsp;</td>
+                        <th>Prénom</>
+                        <td>{{ paiement.etudiant.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Année académique</th>
+                        <td>{{ paiement.anScolaire.nom }}</td>
+                        <td>&nbsp;</td>
+                        <th>Classe</th>
+                        <td>{{ paiement.etudiantClasse.classe.code }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ paiement.date|dateFr }}</td>
+                        <td>&nbsp;</td>
+                        <th>Référence</th>
+                        {#<td>{{ paiement.ref }}</td>#}
+                    </tr>
+                    <tr>
+                        <th>Montant versé</th>
+                        <td>
+                            {{ paiement.montant|formatFr }}
+                            F CFA
+                        </td>
+                        <td>&nbsp;</td>
+                        <th>Mode d’opération</th>
+                        {#<td>#}
+                        {#    {{ paiement.modeOperation }}#}
+                        {#    #}{# paiement.banque.nom #}
+                        {#</td>#}
+                    </tr>
+                    <tr>
+                        <th>Montant en lettre</th>
+                        <td colspan="4">
+                            <span id="nbre-lettre"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-sm" style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>FRAIS SCOLARITE</th>
+                <th>SOMME TOTALE PAYEE</th>
+                <th>RESTANT DU</th>
+            </tr>
+        </thead>
+        <tbody class="value font-weight-bold">
+            <tr>
+                <td>
+                    {{ paiement.etudiantClasse.montant|formatFr }}
+                </td>
+                <td>
+                    {{ paiement.etudiantClasse.getPaiementsTotal|formatFr }}
+                </td>
+                <td>
+                    {{ (paiement.etudiantClasse.montant - paiement.etudiantClasse.getPaiementsTotal)|formatFr }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="mb-5">
+        Le Comptable
+
+        <span class="float-right">
+            <small>
+                Imprimer le :
+                {{ ''|date('d-m-Y à H:i') }}
+                par :
+                {{ app.user.name }}
+            </small>
+        </span>
+    </p>
+
+    <p class="mt-5"></p>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ absolute_url(asset('js/nombre_en_lettre.js')) }}"></script>
+
+    <script>
+        $(function () {
+            $('#nbre-lettre').html(NumberToLetter({{ paiement.montant }}) + ' F CFA');
+        })
+    </script>
+{% endblock %}

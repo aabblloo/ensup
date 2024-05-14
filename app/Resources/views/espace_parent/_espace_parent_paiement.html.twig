@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Parent Etudiant paiement{% endblock %}
+
+{% block titre %}Situation des paiements de : <span class="text-danger">{{ etutiant.prenomNom }}</span>{% endblock %}
+
+{% block body %}
+
+    <table id="table-sort" class="table table-bordered table-striped table-hover table-sm">
+        <thead>
+        <tr>
+            <th>Année</th>
+            <th>Classe</th>
+            <th>Montant dû</th>
+            <th>Montant payé</th>
+            <th>Restant</th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for paie in paiements %}
+            <tr>
+                <td>{{ paie.annee }}</td>
+                <td>{{ paie.classe }}</td>
+                <td class="text-right">{{ paie.montant_du | formatFr }}</td>
+                <td class="text-right">{{ paie.montant_paye | formatFr }}</td>
+                <td class="text-right text-danger">{{ (paie.montant_du - paie.montant_paye) | formatFr }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#espace_parent_index").addClass("active");
+        });
+    </script>
+{% endblock %}

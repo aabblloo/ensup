@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres index
+{% endblock %}
+{% block titre %}Liste des Paramètres
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <p>
+            <a href="{{ path('parametres_new') }}">Nouveau Paramètre</a>
+        </p>
+    {% endif %}
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Clé</th>
+                <th>Valeur</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for parametre in parametres %}
+                <tr>
+                    <td>{{ parametre.cle }}</td>
+                    <td>{{ parametre.valeur }}</td>
+                    <td>
+                        <a href="{{ path('parametres_edit', {'id': parametre.id}) }}">Editer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#param_index").addClass("active");
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <style>
+        li{
+            padding: 5px;
+        }
+    </style>
+<div>
+    <ul class="white" style="list-style-type: square;">
+
+        <li>
+            <a href="{{ path('lst_etd_classe') }}" target="_blank">
+                Liste des étudiants par niveau d'étude
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('lst_etd_departement') }}" target="_blank">
+                Liste des étudiants par département
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('lst_paie_date') }}" target="_blank">
+                Les paiements effectués entre deux dates
+            </a>
+        </li>
+
+        {#<li>
+            <a href="{{ path('lst_etd_classe_seuil') }}" target="_blank">
+                Liste des étudiants en dessous d’un seuil (instance de paiement) par classe
+            </a>
+        </li>#}
+
+        {#<li>
+            <a href="{{ path('lst_etd_classe_100') }}" target="_blank">
+                Liste des étudiants à 100% de paiement
+            </a>
+        </li>#}
+
+        <li>
+            <a href="{{ path('lst_dep_annee') }}" target="_blank">
+                Liste des dépenses par année scolaire
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('lst_dep_date') }}" target="_blank">
+                Liste des dépenses au cours d’une période
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('honoraire_prof') }}" target="_blank">
+                Honoraires mensuels des professeurs
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('honoraire_prof_periode') }}" target="_blank">
+                Honoraires des professeurs par periode
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('fiche_evaluation_new') }}" target="_blank">
+                Fiche d'évaluation
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ path('stat_departement') }}" target="_blank">
+                Statistiques
+            </a>
+        </li>
+
+    </ul>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $('#gestion_scolaire').attr('class');
+            $('#gestion_scolaire').attr('class', attr + ' active');
+            attr = $('#gs_etat_index').attr('class');
+            $('#gs_etat_index').attr('class', attr + ' active');
+        });
+    </script>
+{% endblock %}

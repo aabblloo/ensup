@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Table(name="sf3_semestre")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SemestreRepository")
+ * @UniqueEntity(fields="code")
+ * @UniqueEntity(fields="nom")
+ */
+class Semestre
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=20, nullable=true, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1})
+     * @Assert\NotBlank()
+     */
+    private $ordre;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Ue", mappedBy="semestre")
+     */
+    private $ues;
+}

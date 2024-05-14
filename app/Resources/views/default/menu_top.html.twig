@@ -1,0 +1,241 @@
+<div class="container-fluid_">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">{{ app_name }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item" id="home">
+                    <a class="nav-link" href="{{ path('homepage') }}">
+                        <i class="fa fa-home"></i>
+                        Accueil
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <!-- administration -->
+                <li class="nav-item dropdown" id="admin">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-toolbox"></i>
+                        Administration
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <a class="dropdown-item" href="{{ path('an_scolaire_index') }}" id="an_scolaire_index">
+                            <i class="fa fa-calendar-alt"></i>
+                            Année académique
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('departement_index') }}"
+                           id="departement_index">
+                            <i class="fa fa-school"></i>
+                            Département
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('listeUe_index') }}"
+                           id="liste_ue_index">
+                            <i class="fa fa-calculator"></i>
+                            Liste des UEs
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('carte_scolaire') }}" id="carte_scolaire">
+                            <i class="fas fa-images"></i>
+                            Carte d'identité académique
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('user_index') }}" id="user_index">
+                            <i class="fas fa-user"></i>
+                            Utilisateur
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('parametres_index') }}" id="param_index">
+                            <i class="fas fa-toolbox"></i>
+                            Paramètres
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('logs_index') }}" id="log_index">
+                            <i class="fas fa-file-archive"></i>
+                            Afficher les logs
+                        </a>
+
+                    </div>
+                </li>
+
+                <!-- gestion scolaire -->
+                <li class="nav-item dropdown" id="gestion_scolaire">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-book-open"></i>
+                        Gestion académique
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <!-- étudiants -->
+                        <a class="dropdown-item" href="{{ path('etudiant_search') }}" id="etudiant_search">
+                            <i class="fa fa-search"></i>
+                            Rechercher Etudiant(e)
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('etudiant_index') }}" id="etudiant_index">
+                            <i class="fa fa-list-alt"></i>
+                            Liste des Etudiant(es)
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('etudiant_new') }}" id="etudiant_new">
+                            <i class="fa fa-user-graduate"></i>
+                            Enregistrement Etudiant(e)
+                        </a>
+
+                         <a class="dropdown-item" href="{{path('etudiant_import')}}" id="etudiant_import">
+                            <i class="fa fa-arrow-circle-up"></i>
+                            Importer la liste des Etudiant(e)
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ path('bulletin_classe_form') }}" id="bulletin_classe_form">
+                            <i class="fa fa-calculator"></i>
+                            Rélévés de notes par niveau d'étude
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- paiements -->
+                        <a class="dropdown-item" href="{{ path('paiement_index') }}" id="paiement_index">
+                            <i class="fa fa-money-bill-alt"></i>
+                            Liste des paiements
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('paiement_new') }}" id="paiement_new">
+                            <i class="fa fa-money-bill-alt"></i>
+                            Enregistrer un paiement
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- états -->
+                        <a class="dropdown-item" href="{{ path('gs_etat') }}" id="gs_etat_index">
+                            <i class="fa fa-print"></i>
+                            Etats
+                        </a>
+
+                    </div>
+                </li>
+
+                <!-- gestion bulletins -->
+                <li class="nav-item dropdown" id="gestion_bulletin">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-barcode"></i>
+                        Rélévés de notes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('evaluation_index') }}" id="evaluation_index">
+                            <i class="fa fa-calculator "></i>
+                            Liste des évaluations
+                        </a>
+                        <a class="dropdown-item" href="{{ path('evaluation_new') }}" id="evaluation_new">
+                            <i class="fa fa-calculator "></i>
+                            Enregistrer une évaluation
+                        </a>
+
+                    </div>
+                </li>
+
+                <!-- autres -->
+                <li class="nav-item dropdown" id="autre">
+
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bicycle"></i>
+                        Autres
+                    </a>
+
+                    <div
+                            class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <!-- dépenses -->
+                        <a class="dropdown-item" href="{{ path('depense_index') }}" id="depense_index">
+                            <i class="fa fa-dollar-sign"></i>
+                            Liste des dépenses
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('depense_new') }}" id="depense_new">
+                            <i class="fa fa-dollar-sign"></i>
+                            Enregistrer une dépense
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- professeurs -->
+                        <a class="dropdown-item" href="{{ path('prof_index') }}" id="prof_index">
+                            <i class="fa fa-user-astronaut"></i>
+                            Liste des professeurs
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('prof_new') }}" id="prof_new">
+                            <i class="fa fa-user-astronaut"></i>
+                            Enregistrer un professeur
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- cours -->
+                        <a class="dropdown-item" href="{{ path('cours_index') }}" id="cours_index">
+                            <i class="fa fa-chalkboard-teacher"></i>
+                            Liste des cours
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('cours_new') }}" id="cours_new">
+                            <i class="fa fa-chalkboard-teacher"></i>
+                            Enregistrer un cours
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- autres documents -->
+                        <a class="dropdown-item" href="{{ path('autre_doc_index') }}" id="autre_doc_index">
+                            <i class="fa fa-file-pdf"></i>
+                            Liste des documents
+                        </a>
+
+                        <a class="dropdown-item" href="{{ path('autre_doc_new') }}" id="autre_doc_new">
+                            <i class="fa fa-file-pdf"></i>
+                            Enregistrer un document
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown" id="moi_index">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-circle"></i>
+                        {{ app.user.name }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('user_change_pass') }}" id="change_password"
+                           target="_blank">
+                            Changer mot de passe
+                        </a>
+                        <a class="dropdown-item" href="{{ path('logout') }}">
+                            <i class="fa fa-chevron-right"></i>
+                            Déconnexion
+                        </a>
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+</div>

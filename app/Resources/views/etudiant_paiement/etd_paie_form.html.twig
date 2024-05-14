@@ -1,0 +1,66 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<div class="row">
+    <div class="col-5">
+        <table class="table table-borderless table-hover">
+            <tr>
+                <td style="width:40%;">
+                    <label for="{{ form.date.vars.id }}">
+                        Date
+                        <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.date) }}
+                    {{ form_errors(form.date) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="{{ form.montant.vars.id }}">
+                        Montant
+                        <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.montant) }}
+                    {{ form_errors(form.montant) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:40%;">
+                    <label for="{{ form.anScolaire.vars.id }}">
+                        Année académique
+                        <i class="text-danger">*</i>
+                    </label>
+                </td>
+                <td>
+                    {{ form_widget(form.anScolaire) }}
+                    {{ form_errors(form.anScolaire) }}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:40%;"></td>
+                <td>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fa fa-save"></i>
+                        Enregistrer
+                    </button>
+                    <a href="{{ path('etd_paie_index', {'id': etudiant.id}) }}" 
+                       class="btn btn-primary btn-sm">
+                        <i class="fa fa-arrow-left"></i>
+                        Annuler
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+{{ form_rest(form) }}                   
+{{ form_end(form) }}

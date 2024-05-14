@@ -1,0 +1,99 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}Bulletin{% endblock %}
+
+{% block body %}
+{% set nbr = 0 %}
+{% for releve in releves %}
+{% if nbr > 0 %}
+{% include "bulletin/entete.html.twig" %}
+{% endif %}
+<h4 class="text-center bg-dark text-white p-1 mb-3">RELEVÉ DE NOTES</h4>
+<h6 class="text-right">Année universitaire: {{ etudiant_classe.anScolaire.nom }}</h6>
+<h6 class="text-right">Niveau d'étude: {{ etudiant_classe.classe.nom }}</h6>
+<h6>D.E.R : {{ etudiant_classe.classe.cycle.specialite.section.departement.nom }}</h6>
+<h6>SECTION: {{ etudiant_classe.classe.cycle.specialite.section.nom }}</h6>
+<h6>PRENOM ET NOM : <span class="value">{{ etudiant_classe.etudiant.prenomNom }}</span></h6>
+{% if releve.notes is not null and releve.notes|length > 0 %}
+{% set nbr = nbr + 1 %}
+<h6>Notes du {{ releve.semestre.nom }}</h6>
+
+<table class="table table-bordered table-striped">
+    <thead class="bg-info text-white">
+        <tr>
+            <th style="width: 5%">N°</th>
+            <th>Unités d'enseignement</th>
+            <th style="width: 15%">Sessions</th>
+            <th style="width: 10%">Moyennes</th>
+            <th style="width: 5%">Crédits</th>
+            <th style="width: 10%">Resultats</th>
+            <th style="width: 15%">Mentions</th>
+        </tr>
+    </thead>
+    <tbody class="value">
+        {% for note in releve.notes %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ note.evaluation.ueNom }}</td>
+            <td>{{ releve.session }}</td>
+            <td class="text-center">{{ note.moyenne }}</td>
+            <td class="text-center">{{ note.credit }}</td>
+            <td>{{ note.resultat }}</td>
+            <td>{{ note.mention }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+    <tfoot class="value bg-light">
+        <tr>
+            <th></th>
+            <th>TOTAUX</th>
+            <th></th>
+            <th class="text-center">{{ releve.moyennes }}</th>
+            <th class="text-center">{{ releve.credits }}</th>
+            <th></th>
+            <th class="text-right"></th>
+        </tr>
+    </tfoot>
+    
+</table>
+
+<p class="mb-4" style="padding-left: 6%">
+    Moyenne <span style="display: inline-block; width: 36%; border-bottom: dashed 1px silver;"></span> :
+    {{ releve.moyenne_generale|number_format(2, ',', ' ') }}
+</p>
+
+
+<div class="">
+    <div class="row justify-content-end">
+        <div class="col-md-4 text-right">
+            <div  style="margin-bottom: 20px">Bamako, le ...........................</div>
+            <div>Le chef de DER</div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% if nbr > 0 and releves|length != nbr %} 
+<div style='page-break-after: always;'></div>
+{% endif %}
+
+{% endfor %}
+
+{% if releves|length == nbr %}
+<p style="padding-left: 6%">
+    Moyenne annuelle <span style="display: inline-block; width: 29.8%; border-bottom: dashed 1px silver;"></span> :
+    {{ moyenne_annuelle|number_format(2, ',', ' ') }}
+</p>
+{% endif %}
+
+{# <div class="bas-page">
+    <div class="row justify-content-end">
+        <div class="col-md-4 text-right">
+            <div  style="margin-bottom: 20px">Bamako, le ...........................</div>
+            <div>Le chef de DER</div>
+        </div>
+    </div>
+</div> #}
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'default/form_theme.html.twig' %}
+{% set titre = 'Honoraire des professeurs par periode' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    <span style="display: block; text-align: center">{{ titre }}</span>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row align-items-center justify-content-center"
+         style="margin-bottom: 20px">
+
+        <div class="col-4">
+            <table class="table">
+                <tr>
+                    <td style="width: 40%; padding: 0; border: none;"></td>
+                    <td style="border: none; padding: 0;"></td>
+                </tr>
+                {{ form_row(form.prof) }}
+                {{ form_row(form.annee) }}
+                {{ form_row(form.debut) }}
+                {{ form_row(form.fin) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-file-pdf"></i>
+                            Afficher
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $("#gestion_scolaire").attr('class');
+            $("#gestion_scolaire").attr("class", attr + " active");
+            attr = $("#gs_etat_index").attr("class");
+            $("#gs_etat_index").attr("class", attr + " active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                width: "100%"
+            });
+
+        });
+    </script>
+{% endblock %}

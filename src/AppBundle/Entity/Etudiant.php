@@ -1,0 +1,960 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Serializable;
+use AppBundle\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\EtudiantClasse;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+
+/**
+ * @ORM\Table(name="sf3_etudiant", indexes={
+ *      @ORM\Index(columns={
+ *          "prenom", "nom", "date_naiss_str", "telephone", "lieu_naiss",
+ *          "matricule", "quartier", "last_classe"},
+ *          flags={"fulltext"}, name="idx_fulltext_all"),
+ * })
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EtudiantRepository")
+ * @UniqueEntity(fields="matricule", message="Cette matricule existe déjà.")
+ * @UniqueEntity(fields="telephone", message="Ce numéro de téléphone existe déjà.")
+ * @UniqueEntity(fields="email", message="Cet email existe déjà.")
+ */
+class Etudiant implements AdvancedUserInterface
+{
+
+    /**
+     * @Assert\Image(
+     *      minWidth = 413,
+     *      maxWidth = 413,
+     *      minHeight = 531,
+     *      maxHeight = 531
+     * )
+     */
+    public $file;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
+     * @ORM\Column(type="string", length=30, unique=true)
+     * @Assert\Type(type="alnum")
+     */
+    private $matricule;
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
+    private $prenom;
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
+    private $nom;
+    /**
+     * @ORM\Column(type="string", length=1)
+     * @Assert\NotBlank()
+     * @Assert\Choice(callback="getSexes")
+     */
+    private $sexe;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @Assert\Date()
+     */
+    private $dateNaiss;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $dateNaissStr;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lieuNaiss;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true, unique=true)
+     * @Assert\Regex(
+     *      pattern =   "#^[2-9]\d{7}$#",
+     *      message =   "Le format n'est pas correcte."
+     * )
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $passwordText;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive = true;
+
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true, unique=true)
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     * @Assert\Type(type="integer")
+     * @Assert\Regex(
+     *      pattern =   "#^\d{4}$#",
+     *      message =   "Le format n'est pas correcte."
+     * )
+     */
+    private $anneeDef;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     * @Assert\Type(type="integer")
+     * @Assert\Regex(
+     *      pattern =   "#^\d{4}$#",
+     *      message =   "Le format n'est pas correcte."
+     * )
+     */
+    private $anneeBac;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true, options={"default":"En cours"})
+     */
+    private $etat = 'En cours';
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EtudiantClasse", mappedBy="etudiant")
+     */
+    private $etudiantClasses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $lastClasse;
+
+    /**
+     * @ORM\Column(name="is_acces_cours", type="boolean", options={"default":1})
+     */
+    private $isAccesCours = true;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $search;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Note", mappedBy="etudiant")
+     */
+    private $notes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->etudiantClasses = new ArrayCollection();
+        $this->generatePassword();
+    }
+
+    public function generatePassword()
+    {
+        $chaine = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $chiffre = '123456789';
+        $code = '';
+
+        for ($i = 1; $i <= 3; $i++) {
+            $rd = rand(0, strlen($chaine) - 1);
+            $code .= $chaine[$rd];
+        }
+
+        for ($i = 1; $i <= 3; $i++) {
+            $rd = rand(0, strlen($chiffre) - 1);
+            $code .= $chiffre[$rd];
+        }
+
+        $this->passwordText = $code;
+    }
+
+    public static function getSexes()
+    {
+        return ['M', 'F'];
+    }
+
+    public static function getEtats()
+    {
+        return ['En cours', 'Abandon', 'Exclu', 'Fin de cycle'];
+    }
+
+    public function getMlePrenomNom()
+    {
+        return $this->matricule . ' - ' . $this->nom . ' ' . $this->prenom;
+    }
+
+    public function getPrenomNomMle()
+    {
+        return $this->nom . ' ' . $this->prenom . ' - ' . $this->matricule;
+    }
+
+    public function getPhotoDefault()
+    {
+        return $this->photo ? $this->photo : 'default.jpg';
+    }
+
+    public function upload()
+    {
+        if ($this->file === null)
+            return;
+
+        $dossier = realpath('images/etudiants') . DIRECTORY_SEPARATOR;
+        $extention = strtolower($this->file->getClientOriginalExtension());
+        $this->photo = uniqid('', true) . ".{$extention}";
+        $this->file->move($dossier, $this->photo);
+        $this->file = null;
+    }
+
+    public function generateCode()
+    {
+        //$chaine = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $code = strtoupper($this->prenom[0] . $this->nom[0]);
+
+        for ($i = 1; $i <= 4; $i++) {
+            $rd = rand(0, 9);
+            $code .= $rd;
+        }
+
+        $code .= 'ENSUP';
+
+        $this->matricule = $code;
+    }
+
+    public function concat()
+    {
+        $rech = $this->matricule . ' ';
+        $rech .= $this->prenom . ' ';
+        $rech .= $this->nom . ' ';
+        $rech .= $this->dateNaiss->format('d-m-Y') . ' ';
+        $rech .= $this->lieuNaiss . ' ';
+        $rech .= $this->quartier . ' ';
+        $rech .= $this->telephone . ' ';
+        $rech .= $this->email . ' ';
+        $this->search = $rech;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get matricule
+     *
+     * @return string
+     */
+    public function getMatricule()
+    {
+        return $this->matricule;
+    }
+
+    /**
+     * Set matricule
+     *
+     * @param string $matricule
+     *
+     * @return Etudiant
+     */
+    public function setMatricule($matricule)
+    {
+        $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     *
+     * @return Etudiant
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Etudiant
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get sexe
+     *
+     * @return string
+     */
+    public function getSexe()
+    {
+        return $this->sexe;
+    }
+
+    /**
+     * Set sexe
+     *
+     * @param string $sexe
+     *
+     * @return Etudiant
+     */
+    public function setSexe($sexe)
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    /**
+     * Get dateNaiss
+     *
+     * @return \DateTime
+     */
+    public function getDateNaiss()
+    {
+        return $this->dateNaiss;
+    }
+
+    /**
+     * Set dateNaiss
+     *
+     * @param \DateTime $dateNaiss
+     *
+     * @return Etudiant
+     */
+    public function setDateNaiss($dateNaiss)
+    {
+        $this->dateNaiss = $dateNaiss;
+
+        return $this;
+    }
+
+    /**
+     * Get lieuNaiss
+     *
+     * @return string
+     */
+    public function getLieuNaiss()
+    {
+        return $this->lieuNaiss;
+    }
+
+    /**
+     * Set lieuNaiss
+     *
+     * @param string $lieuNaiss
+     *
+     * @return Etudiant
+     */
+    public function setLieuNaiss($lieuNaiss)
+    {
+        $this->lieuNaiss = $lieuNaiss;
+
+        return $this;
+    }
+
+    /**
+     * Get quartier
+     *
+     * @return string
+     */
+    public function getQuartier()
+    {
+        return $this->quartier;
+    }
+
+    /**
+     * Set quartier
+     *
+     * @param string $quartier
+     *
+     * @return Etudiant
+     */
+    public function setQuartier($quartier)
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     *
+     * @return Etudiant
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Etudiant
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get anneeDef
+     *
+     * @return integer
+     */
+    public function getAnneeDef()
+    {
+        return $this->anneeDef;
+    }
+
+    /**
+     * Set anneeDef
+     *
+     * @param integer $anneeDef
+     *
+     * @return Etudiant
+     */
+    public function setAnneeDef($anneeDef)
+    {
+        $this->anneeDef = $anneeDef;
+
+        return $this;
+    }
+
+    /**
+     * Get anneeBac
+     *
+     * @return integer
+     */
+    public function getAnneeBac()
+    {
+        return $this->anneeBac;
+    }
+
+    /**
+     * Set anneeBac
+     *
+     * @param integer $anneeBac
+     *
+     * @return Etudiant
+     */
+    public function setAnneeBac($anneeBac)
+    {
+        $this->anneeBac = $anneeBac;
+
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return string
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param string $etat
+     *
+     * @return Etudiant
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return Etudiant
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get search
+     *
+     * @return string
+     */
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
+    /**
+     * Set search
+     *
+     * @param string $search
+     *
+     * @return Etudiant
+     */
+    public function setSearch($search)
+    {
+        $this->search = $search;
+
+        return $this;
+    }
+
+    /**
+     * Add etudiantClass
+     *
+     * @param \AppBundle\Entity\EtudiantClasse $etudiantClass
+     *
+     * @return Etudiant
+     */
+    public function addEtudiantClass(EtudiantClasse $etudiantClass)
+    {
+        $this->etudiantClasses[] = $etudiantClass;
+
+        return $this;
+    }
+
+    /**
+     * Remove etudiantClass
+     *
+     * @param \AppBundle\Entity\EtudiantClasse $etudiantClass
+     */
+    public function removeEtudiantClass(EtudiantClasse $etudiantClass)
+    {
+        $this->etudiantClasses->removeElement($etudiantClass);
+    }
+
+    /**
+     * Get etudiantClasses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtudiantClasses()
+    {
+        return $this->etudiantClasses;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Etudiant
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUsername()
+    {
+        return $this->telephone;
+    }
+
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_ETUDIANT'];
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    //    /** @see \Serializable::serialize() */
+    //    public function serialize()
+    //    {
+    //        return serialize(array(
+    //            $this->id,
+    //            $this->username,
+    //            $this->password,
+    //            $this->isActive,
+    //                // see section on salt below
+    //                // $this->salt,
+    //        ));
+    //    }
+
+    //    /** @see \Serializable::unserialize() */
+    //    public function unserialize($serialized)
+    //    {
+    //        list (
+    //                $this->id,
+    //                $this->username,
+    //                $this->password,
+    //                $this->isActive,
+    //                // see section on salt below
+    //                // $this->salt
+    //                ) = unserialize($serialized);
+    //    }
+
+    //    /**
+    //     * Set username
+    //     *
+    //     * @param string $username
+    //     *
+    //     * @return User
+    //     */
+    //    public function setUsername($username)
+    //    {
+    //        $this->username = $username;
+    //
+    //        return $this;
+    //    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getPrenomNom();
+    }
+
+    public function getPrenomNom()
+    {
+        return $this->nom . ' ' . $this->prenom;
+    }
+
+    /**
+     * Get dateNaissStr
+     *
+     * @return string
+     */
+    public function getDateNaissStr()
+    {
+        return $this->dateNaissStr;
+    }
+
+    /**
+     * Set dateNaissStr
+     *
+     * @param string $dateNaissStr
+     *
+     * @return Etudiant
+     */
+    public function setDateNaissStr($dateNaissStr)
+    {
+        $this->dateNaissStr = $dateNaissStr;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Etudiant
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLogin
+     *
+     * @return \DateTime
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * Set lastLogin
+     *
+     * @param \DateTime $lastLogin
+     *
+     * @return Etudiant
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * Get lastClasse
+     *
+     * @return string
+     */
+    public function getLastClasse()
+    {
+        return $this->lastClasse;
+    }
+
+    /**
+     * Set lastClasse
+     *
+     * @param string $lastClasse
+     *
+     * @return Etudiant
+     */
+    public function setLastClasse($lastClasse)
+    {
+        $this->lastClasse = $lastClasse;
+
+        return $this;
+    }
+
+    public function getPasswordText(): ?string
+    {
+        return $this->passwordText;
+    }
+
+    public function setPasswordText(?string $passwordText): self
+    {
+        $this->passwordText = $passwordText;
+
+        return $this;
+    }
+
+    /**
+     * Get isAccesCours
+     *
+     * @return boolean
+     */
+    public function getIsAccesCours()
+    {
+        return $this->isAccesCours;
+    }
+
+    /**
+     * Set isAccesCours
+     *
+     * @param boolean $isAccesCours
+     *
+     * @return Etudiant
+     */
+    public function setIsAccesCours($isAccesCours)
+    {
+        $this->isAccesCours = $isAccesCours;
+
+        return $this;
+    }
+
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Note $note
+     *
+     * @return Etudiant
+     */
+    public function addNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes[] = $note;
+
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Note $note
+     */
+    public function removeNote(\AppBundle\Entity\Note $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+}

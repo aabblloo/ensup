@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+    <span class="small">
+        de
+        {{ etudiantClasse.etudiant.prenomNom }}
+    </span>
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer le niveau d'étude suivant ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-sm_ table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <td>Classe</td>
+                    <td class="value">{{ etudiantClasse.classe.code }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" id="delete_btn"
+                                class="btn btn-danger btn-sm_">
+                            <i class="fa fa-sm_ fa-trash-alt"></i>
+                            Supprimer
+                        </button>
+                        <a href="{{ path('etudiant_classe_new',{'id': etudiantClasse.etudiant.id }) }}"
+                           class="btn btn-sm_ btn-success">
+                            <i class="fa fa-sm_ fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#gestion_scolaire").attr("class");
+            $("#gestion_scolaire").attr("class", attr + " active");
+            attr = $("#etudiant_new").attr("class");
+            $("#etudiant_new").attr("class", attr + " active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer ce niveau d'étude ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

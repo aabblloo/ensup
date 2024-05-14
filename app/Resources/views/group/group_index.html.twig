@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des groupes
+{% endblock %}
+
+{% block titre %}
+    Liste des groupes d'utilisateurs
+{% endblock %}
+
+{% block body %}
+    <p>
+        <a href="{{ path('group_new') }}" class="btn btn-link">
+            <i class="fas fa-user-friends"></i>
+            Ajouter un groupe
+        </a>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Rôle</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for g in groups %}
+            <tr>
+                <td>{{ g.name }}</td>
+                <td>{{ g.role }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('group_edit', {'id':g.id}) }}" class="btn btn-link py-0" title="Editer">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{{ path('group_delete', {'id':g.id}) }}" class="btn btn-link py-0 text-danger"
+                       title="Supprimer">
+                        <i class="fa fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#user_index").addClass("active");
+        });
+    </script>
+{% endblock %}

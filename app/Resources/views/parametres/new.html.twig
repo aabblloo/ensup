@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}New Paramètres{% endblock %}
+{% block titre %}Nouveau Paramètre{% endblock %}
+
+{% block body %}
+    {{ include('parametres/_form.html.twig') }}
+{% endblock %}

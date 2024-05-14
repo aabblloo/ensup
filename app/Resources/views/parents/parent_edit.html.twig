@@ -1,0 +1,19 @@
+{# parent edit #}
+
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+{% block title %}Parent Edit{% endblock %}
+{% block titre %}Edition Parent d'étudiant∙e{% endblock %}
+
+{% block body %}
+    {{ include('parents/parent_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $('#admin').addClass('active');
+            $('#parent_index').addClass('active');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb_">
+        <a class="btn btn-link" href="{{ path('module_new') }}">
+            <i class="fa fa-remodule fa-sm"></i>
+            Ajouter un module
+        </a>
+    </div>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Nom</th>
+                <th>Ue</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="value">
+            {% for module in modules %}
+                <tr>
+                    <td>{{ module.code }}</td>
+                    <td>{{ module.nom }}</td>
+                    <td>{{ module.ue.nom }}</td>
+                    <td>
+                        <a href="{{ path('module_edit', {'id': module.id}) }}" title="Modifier">
+                            <i class="fa fa-edit fa-sm"></i>
+                        </a>
+                        <a href="{{ path('module_delete', {'id': module.id}) }}" title="Supprimer">
+                            <i class="fa fa-trash text-danger fa-sm"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <caption>Pas d'enregistrement</caption>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            var attr = $("#admin").attr("class");
+            $("#admin").attr("class", attr + " active");
+            attr = $("#module_index").attr("class");
+            $("#module_index").attr("class", attr + " active");
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{# carte scolaire form #}
+
+{% extends "base.html.twig" %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}Carte d'identité académique{% endblock %}
+
+{% block titre %}
+    <span style="display: block; text-align: center">Carte d'identité académique</span>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row align-items-center justify-content-center"
+         style="margin-bottom: 20px">
+
+        <div class="col-4">
+            <table class="table">
+                <tr>
+                    <td style="width: 40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.classe) }}
+                {{ form_row(form.lettre) }}
+                {{ form_row(form.annee) }}
+                {{ form_row(form.validite) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-file-pdf"></i>
+                            Afficher
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#carte_scolaire").addClass("active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                //disable_search_threshold: 10,
+            });
+
+        });
+    </script>
+{% endblock %}

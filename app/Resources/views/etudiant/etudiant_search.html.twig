@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    <span style="display: block; text-align: center">{{ titre }}</span>
+{% endblock %}
+
+{% block body %}
+
+    <div class="breadcrumb_">
+        <a class="btn btn-link" href="{{ path('etudiant_new') }}">
+            <i class="fa fa-user-graduate"></i>
+            Inscription étudiant(e)
+        </a>
+    </div>
+
+    <div class="row align-items-center justify-content-center" style="margin-top: 20px; margin-bottom: 20px">
+        <div class="col-6">
+            {{ form_start(form) }}
+            <div class="input-group">
+                {{ form_widget(form.search) }}
+                <div class="input-group-append">
+                    <button class="btn btn-success">OK</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+
+        {% for etudiant in etudiants %}
+            <div class="col-3">
+                <div class="card">
+                    <div style="height: 300px; overflow: hidden;">
+                        <a href="{{ path('etudiant_show',{'id':etudiant.id}) }}">
+                            <img class="card-img-top" 
+                                 src="{{ asset('images/etudiants/'~etudiant.photoDefault) }}" 
+                                 alt="Card image cap">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ etudiant.prenomNomMle }}</h5>
+                        <p class="card-text">
+                            Téléphone :
+                            {{ etudiant.telephone }}
+                        </p>
+                        <a href="{{ path('etudiant_show',{'id':etudiant.id}) }}" class="btn btn-sm btn-primary">
+                            <i class="fa fa-sm fa-file-alt"></i>
+                            Afficher
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#gestion_scolaire").addClass("active");
+            $("#etudiant_search").addClass("active");
+        });
+    </script>
+{% endblock %}

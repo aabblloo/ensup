@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    <p>
+        <a href="{{ path('cours_new') }}" class="btn btn-link">
+            <i class="fa fa-sm fa-chalkboard-teacher"></i>
+            Enregistrer un cours
+        </a>
+    </p>
+
+    <div class="row align-items-center justify-content-center" style="margin-bottom: 20px">
+        <div class="col-10">
+            {{ form_start(form) }}
+            <div class="row">
+
+                <div class="col-4">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"
+                                  id="">Professeur</span>
+                        </div>
+                        {{ form_widget(form.prof) }}
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="">du</span>
+                        </div>
+                        {{ form_widget(form.debut) }}
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="">au</span>
+                        </div>
+                        {{ form_widget(form.fin) }}
+                    </div>
+                </div>
+
+                <div class="col-1">
+                    <button class="btn btn-success btn-block">OK</button>
+                </div>
+
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <table id="table-sort"
+           class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>UE</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Nbre heure</th>
+            <th>Niveau d'étude</th>
+            <th>Professeur</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for c in cours %}
+            <tr>
+                <td>{{ c.date|dateFr }}</td>
+                <td>{{ c.ue.nom }}</td>
+                <td>{{ c.debut|date('H:i') }}</td>
+                <td>{{ c.fin|date('H:i') }}</td>
+                <td>{{ c.nbreHeure }}</td>
+                <td>{{ c.ue.classe.nom }}</td>
+                <td>{{ c.prof.prenomNom }}</td>
+
+                <td class="text-right">
+                    <a href="{{ path('cours_edit', {'id': c.id}) }}" class="btn btn-link py-0" title="Editer">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{{ path('cours_delete', {'id': c.id}) }}" class="btn btn-link py-0 text-danger" title="Supprimer">
+                        <i class="fa fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $("#autre").attr("class");
+            $("#autre").attr("class", attr + " active");
+            attr = $("#cours_index").attr("class");
+            $("#cours_index").attr("class", attr + " active");
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                disable_search_threshold: 10,
+                //width: "74%",
+                inherit_select_classes: true
+            });
+        });
+    </script>
+{% endblock %}

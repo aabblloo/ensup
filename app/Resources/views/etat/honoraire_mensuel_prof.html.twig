@@ -1,0 +1,73 @@
+{% extends "base_print.html.twig" %}
+{% set titre = 'Honoraire mensuel' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h5>{{ titre }} de : <span class="font-weight-bold">{{ prof.prenomNom }}</span></h5>
+
+    <h6>
+        Année scolaire :
+        <span class="value font-weight-bold">
+            {{ annee.nom }}
+        </span>
+    </h6>
+
+    <h6>
+        Mois :
+        <span class="value font-weight-bold">
+            {{ mois }}
+        </span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm"
+           style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <th>Date</th>
+        <th>UE</th>
+        <th>Niveau d'étude</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Heure</th>
+        <th>Taux</th>
+        <th>Montant</th>
+        </thead>
+
+        <tfoot>
+        <tr>
+            <th colspan="7">Total</th>
+            <th class="value text-right"
+                style="padding-right: 10px">{{ total|formatFr }}
+            </th>
+        </tr>
+        </tfoot>
+
+        <tbody class="value">
+
+        {% for cr in cours %}
+            <tr>
+                <td>{{ cr.date|date('d/m/Y') }}</td>
+                <td>{{ cr.ue }}</td>
+                <td>{{ cr.classe }}</td>
+                <td>{{ cr.debut|date('H:i') }}</td>
+                <td>{{ cr.fin|date('H:i') }}</td>
+                <td>{{ cr.heure }}</td>
+                <td class="text-right"  style="padding-right: 10px">
+                    {{ cr.taux|formatFr }}
+                </td>
+                <td class="text-right" style="padding-right: 10px">
+                    {{ cr.montant|formatFr }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

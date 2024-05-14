@@ -1,0 +1,69 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    Fiche évaluation
+{% endblock %}
+
+{% block titre %}
+    Fiche évaluation
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-hover table-sm_">
+                <tbody>
+                <tr style="width: 40%;">
+                    <th>Evaluation</th>
+                    <td class="value">
+                        {{ ue.semestre.nom }}
+                        {{ anScolaire.nom }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Niveau d'étude</th>
+                    <td class="value">{{ ue.classe.nom }}</td>
+                </tr>
+
+                <tr>
+                    <th>UE</th>
+                    <td class="value">{{ ue.nom }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Etudiant</th>
+            <th>Note de classe</th>
+            <th>Note Examen</th>
+            {#<th class="text-right">Crédit</th>#}
+            {#<th class="text-right">Moyenne</th>#}
+            {#<th class="text-right">Moyenne Coéff.</th>#}
+        </tr>
+        </thead>
+        <tbody class="value">
+        {% for etudiant in etudiants %}
+            <tr>
+                <td>{{ etudiant.prenomNom }}</td>
+
+                <td class="text-right"></td>
+
+                <td class="text-right"></td>
+
+                {#<td class="text-right"></td>#}
+
+                {#<td class="text-right"></td>#}
+
+                {#<td class="text-right"></td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

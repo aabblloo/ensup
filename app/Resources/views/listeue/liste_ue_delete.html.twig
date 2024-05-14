@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}Suppression UE{% endblock %}
+
+{% block titre %}Suppression UE de la liste{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer l'UE suivante ?</h4>
+    <p class="text-danger">Cette opértion entraine aussi la suppression de toutes les notes associées.</p>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-5">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                    <tr style="width: 40%;">
+                        <th>UE</th>
+                        <td class="value">{{ listeUe.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sigle</th>
+                        <td class="value">{{ listeUe.sigle }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                                <i class="fa fa-sm fa-trash-alt"></i>
+                                Supprimer
+                            </button>
+                            <a href="{{ path('listeUe_index') }}" class="btn btn-sm btn-success">
+                                <i class="fa fa-sm fa-arrow-left"></i>
+                                Annuler
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#liste_ue_index").addClass("active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer cette UE de la liste ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

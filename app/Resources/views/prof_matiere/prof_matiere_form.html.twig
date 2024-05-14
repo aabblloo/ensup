@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }} <span class="small">enseignée par {{ prof.prenomNom }}</span>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-5">
+            <table class="table table-borderless table-hover">
+                <tr>
+                    <td class="py-0" style="width: 20%"></td>
+                    <td class="py-0"></td>
+                </tr>
+                {{ form_row(form.ue) }}
+                {{ form_row(form.debut) }}
+                {{ form_row(form.fin) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fa fa-sm fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set url = path('prof_show', {'id': prof.id}) %}
+                        {% if profMatiere.id %}
+                            {% set url = path('prof_matiere_new', {'id': prof.id}) %}
+                        {% endif %}
+
+                        <a href="{{ url }}"
+                           class="btn btn-sm
+                        btn-primary">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Retour
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        {% if profMatieres is defined %}
+            <div class="col-md-7">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>UE</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody class="value">
+                    {% for profMat in profMatieres %}
+                        <tr>
+                            <td>{{ profMat.ue.nom }}</td>
+                            <td>{{ profMat.debut }}</td>
+                            <td>{{ profMat.fin }}</td>
+                            <td class="text-right">
+                                <a href="{{ path('prof_matiere_edit',{'id':profMat.id}) }}" class="btn btn-link py-0"
+                                   title="Editer">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{{ path('prof_matiere_delete', {'id': profMat.id}) }}"
+                                   class="btn btn-link py-0 text-danger" title="Supprimer">
+                                    <i class="fa fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $('#autre').addClass('active');
+            $('#prof_index').addClass('active');
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                //width: "100%",
+            });
+
+        });
+    </script>
+{% endblock %}

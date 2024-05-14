@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }} <span class="small">pour {{ profMatiere.prof.prenomNom }}</span>
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer l'UE suivante ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-sm table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <th>UE</th>
+                    <td class="value">{{ profMatiere.ue.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Début</th>
+                    <td class="value">{{ profMatiere.debut }}</td>
+                </tr>
+                <tr>
+                    <th>Fin</th>
+                    <td class="value">{{ profMatiere.fin }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                            <i class="fa fa-sm fa-trash-alt"></i>
+                            Supprimer
+                        </button>
+                        <a href="{{ path('prof_matiere_new',{'id': profMatiere.prof.id}) }}" class="btn btn-sm btn-success">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#classe_index").addClass("active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer cet UE ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

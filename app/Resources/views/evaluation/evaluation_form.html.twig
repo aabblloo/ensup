@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-10">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <table class="table table-borderless table-hover">
+                <tr>
+                    <td style="width: 20%"></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        {{ form_label(form.anScolaire) }}
+                    </td>
+                    <td>
+                        <div style="width: 20%">
+                            {{ form_widget(form.anScolaire) }}
+                        </div>
+                        {{ form_errors(form.anScolaire) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(form.session) }}
+                    </td>
+                    <td>
+                        <div style="width: 20%">
+                            {{ form_widget(form.session) }}
+                        </div>
+                        {{ form_errors(form.session) }}
+                    </td>
+                </tr>
+                {# {{ form_row(form.anScolaire) }} #}
+                {# {{ form_row(form.semestre) }} #}
+                {# {{ form_row(form.specialite) }} #}
+                {# {{ form_row(form.classe) }} #}
+                {{ form_row(form.ue) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set url = path('evaluation_index') %}
+                        {% if evaluation.id is not null %}
+                            {% set url = path('evaluation_show', {'id':evaluation.id}) %}
+                        {% endif %}
+                        <a href="{{ url }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_bulletin").addClass("active");
+            $("#evaluation_new").addClass("active");
+
+            $(".chosen-select").chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: "Option non trouvée !",
+                    //width: "100%",
+                }
+            );
+
+        });
+    </script>
+{% endblock %}

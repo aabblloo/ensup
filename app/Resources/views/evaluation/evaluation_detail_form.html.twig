@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <h5>
+        {{ evaluation.ue.nomComplet }} {{ evaluation.anScolaire.nom }}
+    </h5>
+    <div class="row">
+        <div class="col-6">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <table class="table table-borderless table-hover table-sm_">
+                <tr>
+                    <th style="width: 50%">Etudiant</th>
+                    <th>Note de classe</th>
+                    <th>Note Examen</th>
+                </tr>
+                {% for note in form.notes %}
+                    <tr>
+                        <td>
+                            <input type="text" value="{{ note.vars.value.etudiant.prenomNomMle }}" 
+                                   class="form-control" disabled="disabled" />
+                        </td>
+                        <td>{{ form_widget(note.noteClasse) }}</td>
+                        <td>{{ form_widget(note.noteCompo) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td colspan="4">
+                        <button class="btn btn-primary btn-sm_">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        <a href="{{ path('evaluation_show', {'id':evaluation.id}) }}"
+                           class="btn btn-primary btn-sm_">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_bulletin").addClass("active");
+            $("#evaluation_new").addClass("active");
+
+            $(".chosen-select").chosen(
+                    {
+                        allow_single_deselect: true,
+                        no_results_text: "Option non trouvée !",
+                        //width: "100%",
+                    }
+            );
+
+        });
+    </script>
+{% endblock %}

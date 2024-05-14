@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-5">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <table class="table table-borderless table-hover">
+                <tr>
+                    <td style="width: 40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.nom) }}
+                {{ form_row(form.sigle) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        <a href="{{ path('listeUe_index') }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#liste_ue_index").addClass("active");
+        });
+    </script>
+{% endblock %}

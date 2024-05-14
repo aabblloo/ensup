@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+    <span class="small">pour
+    {{ etudiant.prenomNom }}</span>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover table-sm_">
+                <tr>
+                    <td style="width: 40%; padding: 0;"></td>
+                    <td style="padding: 0;"></td>
+                </tr>
+                {{ form_row(form.anScolaire) }}
+                {# {{ form_row(form.specialite) }} #}
+                {{ form_row(form.classe) }}
+                {{ form_row(form.lettre) }}
+                {{ form_row(form.date) }}
+                {{ form_row(form.montant) }}
+                {% if form.montantPaye is defined %}
+                    {{ form_row(form.montantPaye) }}
+                {% endif %}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm_ fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set url = path('etudiant_show', {'id': etudiant.id}) %}
+                        {% if etudiantClasse.id is not null %}
+                            {% set url = path('etudiant_classe_new', {'id': etudiant.id}) %}
+                        {% endif %}
+
+                        <a href="{{ url }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm_ fa-arrow-left"></i>
+                            Retour
+                        </a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="col-8">
+            {% if etudiantClasses is defined %}
+                <table class="table table-bordered_ table-striped table-hover table-sm_">
+                    <thead>
+                    <tr>
+                        <th>Année scolaire</th>
+                        <th>Spécialité</th>
+                        <th>Niveau d'étude</th>
+                        <th>Date</th>
+                        <th class="text-right">Montant</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody class="value">
+                    {% for etc in etudiantClasses %}
+                        <tr>
+                            <td>
+                                {{ etc.anScolaire.nom }}
+                            </td>
+                            <td>
+                                {{ etc.classe.cycle.specialite.nom }}
+                            </td>
+                            <td>
+                                {{ etc.classe.nom }}
+                                {{ etc.lettre }}
+                            </td>
+                            <td>{{ etc.date | dateFr }}</td>
+                            <td class="text-right">{{ etc.montant | formatFr }}</td>
+
+                            <td class="text-right">
+                                <a href="{{ path('etudiant_classe_edit',{'id': etc.id}) }}" class="btn btn-link py-0"
+                                   title="Modifier">
+                                    <i class="fa fa-sm_ fa-edit"></i>
+                                </a>
+
+                                <a href="{{ path('etudiant_classe_delete',{'id': etc.id}) }}" class="btn btn-link py-0"
+                                   title="Supprimer">
+                                    <i class="fa fa-sm_ fa-trash-alt text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            {% endif %}
+
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            var attr = $('#gestion_scolaire').attr('class');
+            $('#gestion_scolaire').attr('class', attr + ' active');
+            attr = $('#etudiant_index').attr('class');
+            $('#etudiant_index').attr('class', attr + ' active');
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true, no_results_text: "Option non trouvée !",
+                // disable_search_threshold: 10,
+            });
+        });
+    </script>
+{% endblock %}

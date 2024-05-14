@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    Supprimer le niveau d'étude
+{% endblock %}
+
+{% block titre %}
+    <span>
+        <a href="{{ path('departement_show', {'id': classe.cycle.specialite.section.departement.id}) }}" class="text-success">
+        {{ classe.cycle.specialite.section.departement.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    <span>
+        <a href="{{ path('specialite_show', {'id': classe.cycle.specialite.id}) }}" class="text-info">
+        {{ classe.cycle.specialite.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+
+    <span>
+        <a href="{{ path('specialite_show', {'id': classe.cycle.specialite.id, 'cycle_id': classe.cycle.id}) }}"
+           class="text-primary">
+        {{ classe.cycle.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+    Supprimer le niveau d'étude
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-danger">Voulez-vous supprimer le niveau d'étude suivante ?</h4>
+
+    {{ form_start(form, {'attr':{'id':'delete_form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-sm_ table-borderless table-hover">
+                <tbody>
+                    <tr>
+                        <td>Code</td>
+                        <td class="value">{{ classe.code }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nom</td>
+                        <td class="value">{{ classe.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+                                <i class="fa fa-sm fa-trash-alt"></i>
+                                Supprimer
+                            </button>
+                            <a href="{{ path('classe_show', {'id': classe.id}) }}" class="btn btn-sm btn-success">
+                                <i class="fa fa-sm fa-arrow-left"></i>
+                                Annuler
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#departement_index").addClass("active");
+
+            $("#delete_btn").click(function () {
+                if (confirm("Voulez-vous supprimer ce niveau d'étude ?")) {
+                    $("#delete_form").submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

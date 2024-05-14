@@ -1,0 +1,62 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}Certificat{% endblock %}
+
+{% block body %}
+    <h2 class="bg-secondary text-center text-white p-2 mb-4">CERTIFICAT<br>DE FREQUENTATION</h2>
+
+    <div style="font-size: 120%">
+        <p>
+            Je soussigné, Secrétaire Général de l'Ecole Normale Supérieure de
+        </p>
+
+        <p>
+            Bamako (MALI), Certifie que :
+            <b>{{ etudiant_classe.etudiant.prenom }} {{ etudiant_classe.etudiant.nom }}</b>
+        </p>
+
+        <p>
+            Né(e) le : <b>{{ etudiant_classe.etudiant.dateNaiss|dateFr }}</b> à
+            <b>{{ etudiant_classe.etudiant.lieuNaiss }}</b>
+        </p>
+
+        <p>
+            Est inscrit (e) à l'école Normale Supérieure :
+        </p>
+
+        <p>
+            <u>Niveau d'Etudes</u> : {{ etudiant_classe.classe.nom }} <b
+                    class="pl-5">{{ etudiant_classe.classe.cycle.nom }}</b>
+        </p>
+
+        <p>
+            <u>Filière</u> : {{ etudiant_classe.classe.cycle.specialite.nom }}
+        </p>
+
+        <p>
+            N° Mle : {{ etudiant_classe.etudiant.matricule }}
+        </p>
+
+        <p>
+            Option :
+        </p>
+
+        <p>
+            En foi de quoi, le présent Certificat lui est délivré pour servir et valoir ce que
+            de droit.
+        </p>
+
+        <div class="row mb-3 justify-content-between mt-5">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <div>Bamako, le {{ ''|date('d/m/Y') }}</div>
+                <div>Le Secrétaire Général,</div>
+                <div style="margin-top: 80px">
+                    {{ signateur ? signateur.valeur : '' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

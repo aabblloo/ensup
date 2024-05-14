@@ -1,0 +1,52 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}Liste des étudiants{% endblock %}
+
+{% block body %}
+    <h5>Liste des étudiants à 100% de paiement</h5>
+
+    <h6>
+        Classe :
+        <span class="value">{{ search.classe.code }}</span>
+        {% if search.lettre %}
+            <span class="value">{{ search.lettre }}</span>
+        {% endif %}
+    </h6>
+
+    <h6>
+        Année scolaire :
+        <span class="value">{{ search.annee.nom }}</span>
+    </h6>
+
+    <h6>
+        Nombre :
+        <span class="value">{{ etdClasses | length }}</span>
+    </h6>
+
+    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
+
+        <thead class="bg-info text-white">
+        <th style="width: 30%;">Prénom</th>
+        <th style="width: 30%;">Nom</th>
+        <th style="width: 20%;">Montant dû</th>
+        <th style="width: 20%;">Montant payé</th>
+        </thead>
+
+        <tbody class="value">
+
+        {% for ec in etdClasses %}
+            <tr>
+                <td>{{ ec.prenom }}</td>
+                <td>{{ ec.nom }}</td>
+                <td class="text-right">{{ ec.montant|formatFr }}</td>
+                <td class="text-right">{{ ec.payer|formatFr }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Pas de résultat</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

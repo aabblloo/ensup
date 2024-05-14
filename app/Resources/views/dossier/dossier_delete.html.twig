@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+    <span class="small">pour
+        {{ personne.prenomNom }}</span>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form,{'attr':{'id':'delete_form'}}) }} Voulez-vous supprimer le dossier :
+    <b>{{ dossier.nom }}</b>
+    ?
+    <button type="button" id="delete_btn" class="btn btn-danger btn-sm">
+        <i class="fa fa-sm fa-trash-alt"></i>
+        Supprimer
+    </button>
+
+    {% if dossier.etudiant %}
+        {% set url = path('etudiant_show', {'id': personne.id}) %}
+    {% else %}
+        {% set url = path('prof_show', {'id': personne.id}) %}
+    {% endif %}
+
+    <a href="{{ url }}" class="btn btn-primary btn-sm">
+        <i class="fa fa-arrow-left fa-sm"></i>
+        Annuler
+    </a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $('#delete_btn').click(function () {
+                if (confirm('Voulez-vous supprimer ce document ?')) {
+                    $('#delete_form').submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

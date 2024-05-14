@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: esgicbamwdadmbdd.mysql.db
+    database_port: null
+    database_name: esgicbamwdadmbdd
+    database_user: esgicbamwdadmbdd
+    database_password: ESGICbko2015
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: ce0736f72c4f1092f7564d4b3f04ac6328ace782

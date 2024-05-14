@@ -1,0 +1,73 @@
+{% extends "base_print.html.twig" %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    {% for section in departement.sections %}
+
+        {% for specialite in section.specialites %}
+
+            {% for cycle in specialite.cycles %}
+                {% for classe in cycle.classes %}
+                    <h5>Liste des étudiants</h5>
+
+                    <h6>
+                        Département : <span class="value">{{ departement.nom }}</span>
+                    </h6>
+
+                    <h6>
+                        Section : <span class="value">{{ section.nom }}</span>
+                    </h6>
+                    <h6>
+                        Spécialité : <span class="value">{{ specialite.nom }}</span>
+                    </h6>
+
+                    <h6>
+                        Année acamédique :
+                        <span class="value">{{ anScolaire.nom }}</span>
+                    </h6>
+
+                    <h6>
+                        Niveau d'étude <span class="value">{{ classe.nom }}</span>
+                    </h6>
+                    <h6>
+                        Nombre :
+                        <span class="value">{{ classe.etudiantClasses | length }}</span>
+                    </h6>
+                    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
+
+                        <thead class="bg-info text-white">
+                        <th style="width: 30%">Nom</th>
+                        <th style="width: 30%">Prénom</th>
+                        <th style="width: 15%">Matricule</th>
+                        <th style="width: 15%">Contact</th>
+                        </thead>
+
+                        <tbody class="value">
+                        {% for etudiantClasse in classe.etudiantClasses %}
+
+                            {% if etudiantClasse.anScolaire.id == anScolaire.id %}
+                                <tr>
+                                    <td>{{ etudiantClasse.etudiant.nom }}</td>
+                                    <td>{{ etudiantClasse.etudiant.prenom }}</td>
+                                    <td>{{ etudiantClasse.etudiant.matricule }}</td>
+                                    <td>{{ etudiantClasse.etudiant.telephone }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+                <div class="mb-5"></div>
+                <div style="break-after: page"></div>
+
+
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+
+{% endblock %}

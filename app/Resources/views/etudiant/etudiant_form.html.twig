@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width:40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.matricule) }}
+                {{ form_row(form.prenom) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.sexe) }}
+                {{ form_row(form.dateNaiss) }}
+                {{ form_row(form.lieuNaiss) }}
+                {{ form_row(form.quartier) }}
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set url = path('etudiant_index') %}
+
+                        {% if isEdit is defined %}
+                            {% set url = path('etudiant_show', {'id': etudiant.id}) %}
+                        {% endif %}
+
+                        <a href="{{ url }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-sm fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width:40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.telephone) }}
+                {{ form_row(form.email) }}
+
+                {# {{ form_row(form.anneeDef) }} #}
+                {{ form_row(form.anneeBac) }}
+                {{ form_row(form.etat) }}
+                {{ form_row(form.isAccesCours) }}
+                {# {% if form.etudiantClasses is defined %}
+                    {% for classe in form.etudiantClasses %}
+                        {{ form_row(classe) }}
+                    {% endfor %}
+                {% endif %} #}
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width:40%"></td>
+                    <td></td>
+                </tr>
+                {{ form_row(form.file) }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <div id="etudiant_file_img">
+                            {% if etudiant.id %}
+                                <div style="height: 400px; overflow: hidden;">
+                                    <img class="card-img-top img-thumbnail"
+                                         src="{{ asset('images/etudiants/'~etudiant.photoDefault) }}"
+                                         alt="{{ etudiant.prenomNom }}">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('chosen/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#gestion_scolaire").addClass("active");
+            $("#etudiant_new").addClass("active");
+
+            $('#etudiant_file').change(function () {
+                readURL(this, '#etudiant_file');
+            });
+
+            $(".chosen-select").chosen({
+                allow_single_deselect: true,
+                no_results_text: "Option non trouvée !",
+                //width: "100%",
+            });
+        });
+    </script>
+{% endblock %}

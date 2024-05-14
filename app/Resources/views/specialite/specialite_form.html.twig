@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'default/form_theme.html.twig' %}
+
+{% block title %}
+    {{ titre }}
+{% endblock %}
+
+{% block titre %}
+    <span>
+        <a href="{{ path('departement_show', {'id': specialite.section.departement.id}) }}" class="text-success">
+        {{ specialite.section.departement.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+    <span>
+        <a href="{{ path('section_show', {'id': specialite.section.id}) }}" class="text-primary">
+        {{ specialite.section.nom }}
+        </a>
+    </span>
+    <span class="font-weight-normal">/</span>
+    {{ titre }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-hover table-sm">
+                <tr>
+                    <td style="width: 20%"></td>
+                    <td></td>
+                </tr>
+                {# {{ form_row(form.code) }} #}
+                {{ form_row(form.nom) }}
+                {# {{ form_row(form.departement) }} #}
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+
+                        {% set route = path('section_show', {'id': specialite.section.id}) %}
+                        {% if specialite.id %}
+                            {% set route = path('specialite_show', {'id': specialite.id}) %}
+                        {% endif %}
+
+                        <a href="{{ route }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-arrow-left"></i>
+                            Annuler
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('chosen/chosen.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(function () {
+            $("#admin").addClass("active");
+            $("#departement_index").addClass("active");
+        });
+    </script>
+{% endblock %}
