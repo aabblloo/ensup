@@ -389,7 +389,7 @@ class EtudiantController extends Controller
      * @Route("/importer", name="etudiant_import", methods="GET|POST")
      */
     public function importAction(Request $request, UserPasswordEncoderInterface $encoder)
-    {
+    {   
         ini_set('memory_limit', '-1');
         
         $form = $this->createForm(EtudiantsImportType::class);
@@ -402,25 +402,25 @@ class EtudiantController extends Controller
              $sheet = $spreadsheet->getActiveSheet();
              $rows = $sheet->toArray();
              $rows = array_slice($rows,1);
+            
              
              foreach($rows as $r){
                 
-                $dateNais = DateTime::createFromFormat('Y-m-d',$r[4]);
-                //die(date("Y-m-d", strtotime($r[6]) ));
-                var_dump($r[3]);
+                $dateNais = new \DateTime($r[3]);
                 $etudiant = new Etudiant();
-                $etudiant->setMatricule($r[0]) ;
-                $etudiant->setPrenom($r[1]) ;
-                $etudiant->setnom($r[2]) ;
-                $etudiant->setSexe($r[3]) ;
-                $etudiant->setLieuNaiss($r[5]) ;
-                $etudiant->setQuartier($r[6]) ;
-                $etudiant->setTelephone($r[7]) ;
-                $etudiant->setEmail($r[8]) ;
-                $etudiant->setAnneeBac($r[9]) ;
-                if ($dateNais instanceof \DateTime) {
-                    $etudiant->setDateNaiss( $dateNais) ;
-                }
+                $etudiant->setPrenom($r[0]) ;
+                $etudiant->setnom($r[1]) ;
+                $etudiant->setSexe($r[2]) ;
+                $etudiant->setLieuNaiss($r[4]) ;
+                $etudiant->setQuartier($r[5]) ;
+                $etudiant->setTelephone($r[6]) ;
+                $etudiant->setEmail($r[7]) ;
+                $etudiant->setAnneeBac($r[8]) ;
+                $etudiant->setDateNaiss( $dateNais) ;
+                do {
+                    $etudiant->generateCode();
+                    $res = $em->getRepository(Etudiant::class)->findOneByMatricule($etudiant->getMatricule());
+                } while ($res);
                 $em->persist($etudiant);
              }
                 
